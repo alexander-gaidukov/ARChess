@@ -1,0 +1,1438 @@
+{
+  "__content" : [
+    {
+      "scenes" : [
+        {
+          "__content" : [
+            {
+              "arAnchorSpecification" : {
+                "alignment" : "horizontal",
+                "name" : "surface"
+              },
+              "behaviors" : [
+
+              ],
+              "gravity" : [
+                0,
+                -9.8000001907348633,
+                0
+              ],
+              "identifier" : "F9610871-0955-494F-A5C3-51D1A281BAB3",
+              "material" : "plastic",
+              "overrides" : {
+                "children" : {
+                  "0BC31297-13FF-42EE-BED6-3C3450A717C5" : null,
+                  "0C4C0DED-FE1D-4A03-89E8-274567A4CF3D" : null,
+                  "0D9DFEBA-3E13-4724-AC09-86AA3018ED0C" : null,
+                  "1A9537AD-FB7C-45EC-9671-773D600A16C5" : null,
+                  "1B7D96D7-A797-475C-A832-A64DC7A49035" : null,
+                  "1BD9D067-CA99-4964-AF08-7DB5B81CE2DB" : null,
+                  "1C8C6C16-8F4F-480B-900D-0C12F2B8CC1C" : null,
+                  "1C39642F-1A56-4036-8BBA-52195491A933" : null,
+                  "1D629D9F-E9A4-454B-A54B-BC0C3F9C4E61" : null,
+                  "1E9FF34F-A408-465E-8814-3B00F59809A2" : null,
+                  "1EE089CC-7DCB-49DE-AB85-13A9E197A935" : null,
+                  "3B5B70A1-ED23-4213-A88E-EA6745FA2369" : null,
+                  "3B49DD21-9DD3-411C-9734-795138C961EA" : null,
+                  "3B997D24-70C7-4B31-9D30-5DF1758B5F63" : null,
+                  "3CBF1333-062B-48E1-BC5D-EADC4A5EC467" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Rook"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "3165E485-BA67-4514-BC2D-174E4BB0029B"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessRook.0f4053cf-3b4b-4682-91d9-f053ea6cbedc",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "C2C310B8-5E36-4674-A234-9CC7F207E9DD"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "BlackRook"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        3.5762792549576261e-07,
+                        0,
+                        -1,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1,
+                        0,
+                        3.5762792549576261e-07,
+                        0,
+                        0.34999999403953552,
+                        0.0099999979138374329,
+                        -0.34999990463256836,
+                        1
+                      ]
+                    }
+                  },
+                  "3D9129BE-C9AF-4B55-A7FD-982066A7FA77" : null,
+                  "3E494007-184F-410C-9207-A1E04A45EA3F" : null,
+                  "4A213441-135C-450E-8EF8-1A4EAB267C1D" : null,
+                  "4C939330-B0AA-4209-A512-43C1CE51CBFF" : null,
+                  "4CAA6777-AB9B-45AE-B9D1-28A28FB94D3D" : null,
+                  "4CFCA8BE-3A2B-4F3E-A7D5-FD1A84F094DC" : null,
+                  "4F2FCC73-F638-414C-8606-4F671D829CDD" : null,
+                  "5BA0FDC4-78DC-4D16-A38A-319CCB4A2426" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Bishop White"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "C860AFE9-EA4A-4396-9D43-1174EEB14925"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessBishopWhite.fc39efd4-ae79-486c-a632-d4f223d254aa",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "073C202C-4A89-484D-AA3E-C972029F902B"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "WhiteBishop"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        3.5762792549576261e-07,
+                        0,
+                        -1,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1,
+                        0,
+                        3.5762792549576261e-07,
+                        0,
+                        0.15000000596046448,
+                        0.0099999979138374329,
+                        0.34999990463256836,
+                        1
+                      ]
+                    }
+                  },
+                  "5E2D81E4-3E37-4247-9D9D-0EB71A08C346" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess King"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "8D302618-AC0C-481B-959C-B5EFEBCEE754"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessKing.c43179cb-c89e-492b-ae53-e5cc5a3738d4",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "6AB85D91-3C1D-48E1-87B0-BE21E78CB6B8"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "BlackKing"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        5.9604651880817983e-08,
+                        0,
+                        -1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        5.9604651880817983e-08,
+                        0,
+                        0.05000000074505806,
+                        0.0099999997764825821,
+                        -0.34999999403953552,
+                        1
+                      ]
+                    }
+                  },
+                  "5E6A0853-26A5-415A-B025-DE214BD60608" : null,
+                  "5E37E3EB-14EC-4740-AD91-FC120CB70F1F" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "boundHeight",
+                          {
+                            "typeName" : "Double",
+                            "value" : 1.5
+                          }
+                        ],
+                        [
+                          "boundWidth",
+                          {
+                            "typeName" : "Double",
+                            "value" : 6
+                          }
+                        ],
+                        [
+                          "depth",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.22
+                          }
+                        ],
+                        [
+                          "font",
+                          {
+                            "typeName" : "String",
+                            "value" : "Helvetica"
+                          }
+                        ],
+                        [
+                          "hasBackground",
+                          {
+                            "typeName" : "Bool",
+                            "value" : false
+                          }
+                        ],
+                        [
+                          "height",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.10000000000000001
+                          }
+                        ],
+                        [
+                          "horizontalAlignment",
+                          {
+                            "typeName" : "String",
+                            "value" : "center"
+                          }
+                        ],
+                        [
+                          "material",
+                          {
+                            "typeName" : "String",
+                            "value" : "standard"
+                          }
+                        ],
+                        [
+                          "materialColor",
+                          {
+                            "typeName" : "double4",
+                            "value" : [
+                              1,
+                              1,
+                              1,
+                              1
+                            ]
+                          }
+                        ],
+                        [
+                          "oneLine",
+                          {
+                            "typeName" : "Bool",
+                            "value" : false
+                          }
+                        ],
+                        [
+                          "precision",
+                          {
+                            "typeName" : "String",
+                            "value" : "normal"
+                          }
+                        ],
+                        [
+                          "text",
+                          {
+                            "typeName" : "String",
+                            "value" : "Aa"
+                          }
+                        ],
+                        [
+                          "verticalAlignment",
+                          {
+                            "typeName" : "String",
+                            "value" : "bottom"
+                          }
+                        ],
+                        [
+                          "verticalPosition",
+                          {
+                            "typeName" : "String",
+                            "value" : "middle"
+                          }
+                        ],
+                        [
+                          "wordWrap",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.Text",
+                        "version" : "0.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "E07E6152-9259-4016-A137-2C72D4F635C4"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        -1,
+                        0,
+                        -1.5099577410637721e-07,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        1.5099577410637721e-07,
+                        0,
+                        -1,
+                        0,
+                        0,
+                        0.038759756833314896,
+                        0,
+                        1
+                      ]
+                    }
+                  },
+                  "5F98AC97-9B0A-48D8-AC69-BCB9F76CAFA9" : null,
+                  "5FC8A241-BC0D-4C1F-AA92-D3C06675A054" : null,
+                  "6A36E1AE-C971-49F0-A2B6-EF0EC1C59C5C" : null,
+                  "6CA5265E-FBD3-4F27-874C-D7A588E30E8A" : null,
+                  "7B383A77-AAF4-42C7-9FB0-E195C9F0D5FF" : null,
+                  "7C6BDD5C-F343-47EA-9BBC-20164E41FE65" : null,
+                  "7F5F1ADC-E5E4-4EF5-A5B5-FC43B071FFA5" : null,
+                  "8DAD8C95-3966-47A0-8C33-63E01B48BBE5" : null,
+                  "8F61383A-B505-4DE1-BFFA-D65866A733D4" : null,
+                  "9F91F62A-EEBF-4C91-9315-C10ECB6F2ACC" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Pawn White"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "10A6BC5B-DB85-4E65-A497-8A13DD26EB5D"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessPawnWhite.6b787afd-d54e-4d86-8ece-57e57109c4d6",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "29DC38DD-42CC-4FD5-8F54-E96228E5052C"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "WhitePawn"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        1.0000001192092896,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0.34999999403953552,
+                        0.0099999979138374329,
+                        0.24999947845935822,
+                        1
+                      ]
+                    }
+                  },
+                  "12E9C38A-FD0A-42AF-A133-2EFA464C331A" : null,
+                  "21D49AD6-13F2-46FF-8D8E-AB06B16BE318" : null,
+                  "30A21CB0-836E-4DB5-A2D0-13AADE362E48" : null,
+                  "033C2A57-7E8A-426B-AE91-3F0A59CFEBA3" : null,
+                  "36BFFF07-3F51-43FA-9EBC-086F89347F69" : null,
+                  "41ECA860-B404-4BB3-95F5-11F9CE2677DB" : null,
+                  "52F8837A-A966-4232-B58E-134F59BE8819" : null,
+                  "57CF3ECF-3A45-45AA-8089-897D841D5B5B" : null,
+                  "65E6628E-038A-4CE5-82D1-92FE7583F5FE" : null,
+                  "71C02B51-D736-443C-B22F-359BDBB9B279" : null,
+                  "097F22D6-62E0-465C-9F1F-8CE645B9D1B4" : null,
+                  "241DF292-E53F-4244-80CE-B95BB026A480" : null,
+                  "324E95B5-F362-4778-A9F0-51DFD43EE951" : null,
+                  "455A29BB-84A0-43AE-BC69-BF1081CF5BB7" : null,
+                  "470C4DD9-7D99-4076-BAD6-E6A047196A90" : null,
+                  "632E476F-1E55-4E30-9723-1C51DD2E8B89" : null,
+                  "000640CE-4574-4E9B-A514-E4C28A405107" : null,
+                  "792C275F-6215-4742-9FDD-6DDF77F8A48C" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Queen White"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "C4A6C9D2-636D-426A-A182-ECC34AF9C1F4"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessQueenWhite.0b8cbf3f-1746-4edb-b905-a29051c677ea",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "90996CE9-2328-453B-A8B3-6B1DB48748AC"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "WhiteQueen"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        5.9604651880817983e-08,
+                        0,
+                        -1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        5.9604651880817983e-08,
+                        0,
+                        -0.05000000074505806,
+                        0.0099999997764825821,
+                        0.34999999403953552,
+                        1
+                      ]
+                    }
+                  },
+                  "0986FC25-486B-4B5E-A2F2-56E270DF989E" : null,
+                  "5357A447-D827-4E68-B954-3AF62C026E2E" : null,
+                  "7126C4B5-0401-4919-9A89-FAB521618E13" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess King White"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "275F38FE-CF59-4C93-A091-9582701668C8"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessKingWhite.b18a71e8-3265-46a5-a512-e84b61ab4030",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "92B68DA1-6336-4F79-A1FB-62EF581C65F4"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "WhiteKing"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        5.9604651880817983e-08,
+                        0,
+                        -1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        5.9604651880817983e-08,
+                        0,
+                        0.05000000074505806,
+                        0.0099999997764825821,
+                        0.34999999403953552,
+                        1
+                      ]
+                    }
+                  },
+                  "8799EF4B-4597-41B7-B4BD-C78C450BC55C" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Knight"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "318A0E61-D549-47EB-91CA-1D60DF66D7D2"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessKnight.43a4b75e-d0d5-41a4-9f9d-700076d2b1af",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "4864E208-0984-42B9-91A7-DFEDC8F77AD5"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "BlackKnight"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        3.5762792549576261e-07,
+                        0,
+                        -1,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1,
+                        0,
+                        3.5762792549576261e-07,
+                        0,
+                        0.25,
+                        0.0099999997764825821,
+                        -0.34999999403953552,
+                        1
+                      ]
+                    }
+                  },
+                  "9673B8E8-9519-4BE1-91DA-C76C086B7BB0" : null,
+                  "15109F20-8D42-4633-A616-0ABE77324F6E" : null,
+                  "38504FF3-109B-45C4-89BA-92102BA8C345" : null,
+                  "97941FAA-5DEC-46E8-BD32-9E33C0DE2270" : null,
+                  "164245CA-3707-4DCB-B857-06E0768713A8" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Queen"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "FDE4CF75-E97C-42D7-B4AD-3EC740F4945F"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessQueen.0468744a-eda3-48d3-9a57-23a98746fec5",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "E897EA22-A8D8-4892-BB7A-616EBDC6488F"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "BlackQueen"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        5.9604651880817983e-08,
+                        0,
+                        -1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        5.9604651880817983e-08,
+                        0,
+                        -0.05000000074505806,
+                        0.0099999997764825821,
+                        -0.34999999403953552,
+                        1
+                      ]
+                    }
+                  },
+                  "259191D2-2E59-4C69-AED6-393149507F86" : null,
+                  "749207B8-5953-4581-8698-6351279760CD" : null,
+                  "3641563D-5DF7-4B0C-8ACF-D0AA9C15DE33" : null,
+                  "43446966-5116-4793-8D10-0D12219AD33C" : null,
+                  "75458231-EF74-441C-8853-4FBB00383CEF" : null,
+                  "A2A5AF9F-2E70-4785-86C5-6E8E3AD4F763" : null,
+                  "A841CD2E-CBA0-42F7-A5AD-D473D9AAD1C4" : null,
+                  "A7084EC1-BFD5-448C-B73B-AAEBA450CE9A" : null,
+                  "A95527D4-78F6-47DD-8C4A-17221177B4C7" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Bishop"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "C78FB269-7C88-4530-9976-6BB780282DAA"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessBishop.3a3a4598-c0fd-401a-9f2b-7fba930a4ce8",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "102FAEB7-1E5E-4F38-9218-5BE4AF4DB726"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "BlackBishop"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        3.5762792549576261e-07,
+                        0,
+                        -1,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1,
+                        0,
+                        3.5762792549576261e-07,
+                        0,
+                        0.15000000596046448,
+                        0.0099999997764825821,
+                        -0.34999999403953552,
+                        1
+                      ]
+                    }
+                  },
+                  "A708115A-45AE-4420-B6C2-E82713555492" : null,
+                  "AC8A2EA0-6B45-48C7-8B22-1520FC80167F" : null,
+                  "AC0997B5-D356-40CB-B500-5B802DA45CC0" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Pawn"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "2F92EED0-B395-4BD9-B16C-3568FC1A7D1E"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessPawn.045ef8aa-1380-4ef1-86e5-103a3bc31d79",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "521AC282-AE8F-45A8-B585-8051B6FCEFCC"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "BlackPawn"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        1.0000001192092896,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0.34999999403953552,
+                        0.0099999979138374329,
+                        -0.24999958276748657,
+                        1
+                      ]
+                    }
+                  },
+                  "B0A9D920-4480-4ACF-92DA-21E845F7D4A8" : null,
+                  "B0D92FDC-86C8-40B9-9464-AE90F48CD1BE" : null,
+                  "B91C7CA3-4AB1-4253-9A84-07383168A8A8" : null,
+                  "B46782CB-A83B-41C9-A986-015FDE794C66" : null,
+                  "BAED8262-B894-4895-A091-DD4EBD291450" : null,
+                  "BB8AD05B-50AA-41E0-9538-E63668B1B9F3" : null,
+                  "BB8DAE16-C4B0-43C3-A74A-8765E40A56E1" : null,
+                  "BB61DEEF-AE39-4AF7-B8D5-A8712CE813D8" : null,
+                  "BE643ED5-750B-46DC-BFFD-2D20A2E219E4" : null,
+                  "C4DFD3FD-9351-4998-AF40-C38FBF0FBAF9" : null,
+                  "C25B47BC-DE3F-4C2C-BF03-0F6FA15D1EED" : null,
+                  "C41C2BF0-2C92-4D11-B306-91BB9DEF153F" : null,
+                  "C83BF468-DBAE-4219-994B-A57E60648411" : null,
+                  "C0851D26-0DDB-42E0-8DB0-3F7F684CD432" : null,
+                  "C95669FD-3113-44F2-9026-83C6C29CDD57" : null,
+                  "CDBFE94A-FFDE-4421-A4AF-43CB9BB6C954" : null,
+                  "CED23628-4DE3-484B-84FA-CEB4051D1AF2" : null,
+                  "D4AF53C4-2820-4043-BB7F-C04E5AEE5628" : null,
+                  "D43A072B-C328-49E2-AF78-F7F95CEFA3DF" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Rook White"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "D3BBAF9E-8E5B-4F40-892B-57B8A6D840F1"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessRookWhite.1d6828e7-7552-4266-a875-f253fa48114b",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "C38BA3E1-58E1-4FDC-8736-2482F1B29D47"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "WhiteRook"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        5.9604651880817983e-08,
+                        0,
+                        -1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        5.9604651880817983e-08,
+                        0,
+                        0.34999999403953552,
+                        0.0099999979138374329,
+                        0.34999990463256836,
+                        1
+                      ]
+                    }
+                  },
+                  "DA22E19F-B994-430D-8C22-EA0504355B35" : null,
+                  "DD8FE5F8-55C8-439C-8216-EF318210A504" : null,
+                  "DF019C63-8BEB-4E0B-8DC6-5D82E21D0F57" : null,
+                  "E85F4469-CE90-4DBB-9174-149E54976C71" : null,
+                  "E711F8F0-6AC7-487A-8D88-B019D33A9783" : null,
+                  "EAB0BF2E-84F3-4E9F-BF3B-942649248174" : null,
+                  "ECBA988F-0677-4C9F-A59E-2A9FDA8EA2C7" : null,
+                  "F13A42BA-633D-4945-9A19-FC7797E6974A" : null,
+                  "F43DA2B5-47C9-4309-AF8E-077CECB5F916" : null,
+                  "F55C1DAA-C76D-4F41-972B-5DE369E19710" : null,
+                  "F129DB1F-97F5-4F4D-BFE3-492C0E941A2C" : null,
+                  "F2639AB0-739B-4E07-B82F-C1FA61316B94" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "item",
+                          {
+                            "typeName" : "String",
+                            "value" : "Chess Knight White"
+                          }
+                        ],
+                        [
+                          "material",
+                          {
+                            "typeName" : "String",
+                            "value" : "clayTerracotta"
+                          }
+                        ],
+                        [
+                          "style",
+                          {
+                            "typeName" : "String",
+                            "value" : "Realistic"
+                          }
+                        ]
+                      ],
+                      "children" : {
+                        "iconicItem" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "AB326370-5A5E-4C57-976A-AAEEC9F74674"
+                                }
+                              ]
+                            ]
+                          }
+                        },
+                        "item" : {
+                          "overrides" : {
+                            "factory" : null,
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "9FA16B42-7B3F-4DAA-8C95-6097B8A063FF"
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.ChessKnightWhite.bf9c9962-634a-41ca-a483-20750ae0cca8",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "BF7D96E5-2718-4F05-9D51-6A6223714DA0"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "WhiteKnight"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "box"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        1.7881396274788131e-07,
+                        0,
+                        1,
+                        0,
+                        0,
+                        1.0000001192092896,
+                        0,
+                        0,
+                        -1,
+                        0,
+                        1.7881396274788131e-07,
+                        0,
+                        0.25,
+                        0.0099999997764825821,
+                        0.34999999403953552,
+                        1
+                      ]
+                    }
+                  },
+                  "FB342D9D-707E-452F-BA3D-DBFDCA75414D" : null
+                },
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
+              },
+              "physicsMode" : "grid",
+              "title" : "Figures",
+              "viewTransform" : {
+                "cameraTransform" : [
+                  -0.99397510290145874,
+                  4.5169151974278066e-08,
+                  -0.10960566252470016,
+                  0,
+                  -0.031420134007930756,
+                  0.9580305814743042,
+                  0.28493878245353699,
+                  0,
+                  0.10500559955835342,
+                  0.28666579723358154,
+                  -0.95225858688354492,
+                  0,
+                  0.7090185284614563,
+                  0.26493102312088013,
+                  -0.072165846824645996,
+                  1
+                ],
+                "sceneTransform" : [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            }
+          ],
+          "__version" : 5
+        }
+      ],
+      "tags" : {
+        "__content" : [
+          {
+            "tagsStore" : {
+
+            }
+          }
+        ],
+        "__version" : 1
+      }
+    }
+  ],
+  "__version" : 1
+}

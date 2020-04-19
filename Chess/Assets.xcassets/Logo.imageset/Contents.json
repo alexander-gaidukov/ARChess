@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "chess-piece-board-game-king-queen-chess-png-clip-art.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "additional_megachess-18_d2980cab-b966-4cee-b5e2-6cd3f0827387.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
