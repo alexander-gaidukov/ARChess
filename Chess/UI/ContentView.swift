@@ -17,7 +17,7 @@ struct ContentView : View {
         case join
     }
     
-    @ObservedObject var gameSession = GameSession()
+    @State var gameSession = GameSession()
     
     @State var gameStarted: Bool = false
     @State var sheetPresented: Bool = false
@@ -58,9 +58,9 @@ struct ContentView : View {
             .navigationBarHidden(true)
             .sheet(isPresented: $sheetPresented, onDismiss: { self.checkSession() }) {
                 if self.sheetType == .host {
-                    HostGameView(presented: self.$sheetPresented, gameSession: self.gameSession)
+                    HostGameView(gameSession: self.gameSession, presented: self.$sheetPresented)
                 } else {
-                    JoinGameView(presented: self.$sheetPresented, gameSession: self.gameSession)
+                    JoinGameView(gameSession: self.gameSession, presented: self.$sheetPresented)
                 }
             }
         }

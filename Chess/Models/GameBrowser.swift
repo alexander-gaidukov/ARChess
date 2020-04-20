@@ -30,7 +30,7 @@ final class GameBrowser: NSObject, ObservableObject {
         MCNearbyServiceBrowser(peer: peerID, serviceType: MultipeerGame.serviceType)
     }()
     
-    init(completed: Binding<Bool>, gameSession: GameSession) {
+    init(gameSession: GameSession, completed: Binding<Bool>) {
         self._completed = completed
         self.gameSession = gameSession
         super.init()

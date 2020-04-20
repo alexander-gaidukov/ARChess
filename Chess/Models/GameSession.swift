@@ -9,6 +9,6 @@
 import SwiftUI
 import MultipeerConnectivity
 
-class GameSession: ObservableObject {
-    @Published var mcSession: MCSession?
+class GameSession {
+    var mcSession: MCSession?
 }

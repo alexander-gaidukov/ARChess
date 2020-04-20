@@ -9,7 +9,6 @@
 import SwiftUI
 import MultipeerConnectivity
 
-
 struct LoadingIndicator: UIViewRepresentable {
     
     var isLoading: Bool
@@ -50,14 +49,18 @@ struct AvailableGameView: View {
 struct JoinGameView: View {
     @ObservedObject private var browser: GameBrowser
     
-    init(presented: Binding<Bool>, gameSession: GameSession) {
-        browser = GameBrowser(completed: presented.negate, gameSession: gameSession)
+    init(gameSession: GameSession, presented: Binding<Bool>) {
+        browser = GameBrowser(gameSession: gameSession, completed: presented.negate)
     }
     
     var body: some View {
         List {
-            ForEach(Array(browser.peers.enumerated()), id: \.offset) {
-                AvailableGameView(peerID: $0.element, isConnecting: $0.element == self.browser.invitingPeer)
+            ForEach(Array(browser.peers.enumerated()), id: \.offset) { item in
+                Button(action: {
+                    self.browser.invite(peerId: item.element)
+                }) {
+                     AvailableGameView(peerID: item.element, isConnecting: item.element == self.browser.invitingPeer)
+                }
             }
         }
         .onAppear { self.browser.start() }
@@ -69,7 +72,7 @@ struct JoinGameView: View {
 struct JoinGameView_Previews: PreviewProvider {
     @State static var presented: Bool = true
     static var previews: some View {
-        JoinGameView(presented: $presented, gameSession: GameSession())
+        JoinGameView(gameSession: GameSession(), presented: $presented)
     }
 }
 #endif

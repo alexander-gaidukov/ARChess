@@ -15,7 +15,6 @@ final class GameAdvertiser: NSObject, ObservableObject {
     var gameSession: GameSession
     @Published var candidatePeerID: MCPeerID?
     @Published var sessionState: MCSessionState = .notConnected
-    
     @Binding var completed: Bool
     
     private var invitationCompletion: ((Bool, MCSession?) -> ())?
@@ -48,9 +47,9 @@ final class GameAdvertiser: NSObject, ObservableObject {
         }
     }
     
-    init(completed: Binding<Bool>, gameSession: GameSession) {
-        self.gameSession = gameSession
+    init(gameSession: GameSession, completed: Binding<Bool>) {
         self._completed = completed
+        self.gameSession = gameSession
         super.init()
     }
     

@@ -18,8 +18,8 @@ struct HostGameView: View {
     
     @ObservedObject private var advertiser: GameAdvertiser
     
-    init(presented: Binding<Bool>, gameSession: GameSession) {
-        advertiser = GameAdvertiser(completed: presented.negate, gameSession: gameSession)
+    init(gameSession: GameSession, presented: Binding<Bool>) {
+        advertiser = GameAdvertiser(gameSession: gameSession, completed: presented.negate)
     }
     
     var body: some View {
@@ -27,14 +27,26 @@ struct HostGameView: View {
             .font(.title)
             .onAppear { self.advertiser.start() }
             .onDisappear { self.advertiser.stop() }
+            .alert(isPresented: $advertiser.shouldShowConfirmation) {
+                Alert(title: Text("\(self.advertiser.candidatePeerID!.displayName) wants to play with you"),
+                      primaryButton: .default(Text("Accept")) {
+                        DispatchQueue.main.async {
+                            self.advertiser.acceptInvitation()
+                        }
+                    }, secondaryButton: .destructive(Text("Decline")) {
+                        DispatchQueue.main.async {
+                            self.advertiser.declineInvitation()
+                        }
+                    })
+            }
     }
 }
 
 #if DEBUG
 struct HostGameView_Previews: PreviewProvider {
-    @State static var presented: Bool = true
+    @State static var presented = false
     static var previews: some View {
-        HostGameView(presented: $presented, gameSession: GameSession())
+        HostGameView(gameSession: GameSession(), presented: $presented)
     }
 }
 #endif
