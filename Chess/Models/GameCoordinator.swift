@@ -123,8 +123,7 @@ final class GameCoordinator: ObservableObject {
     }
     
     func quitTheGame() {
-        gameSession.mcSession?.disconnect()
-        gameSession.mcSession = nil
+        gameSession.mcSession.disconnect()
         quit = true
     }
     
@@ -139,7 +138,7 @@ final class GameCoordinator: ObservableObject {
     }
     
     func sendMessage(_ message: Message) {
-        try? gameSession.mcSession?.send(Message.iAMReady.data, toPeers: gameSession.mcSession?.connectedPeers ?? [], with: .reliable)
+        try? gameSession.mcSession.send(Message.iAMReady.data, toPeers: gameSession.mcSession.connectedPeers, with: .reliable)
     }
     
     func move(figure: Figure, from start: SIMD2<Int>, to end: SIMD2<Int>, completion: @escaping (MoveResult) -> ()) {

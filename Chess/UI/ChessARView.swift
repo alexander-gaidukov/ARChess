@@ -79,7 +79,7 @@ final class ChessARView: ARView {
                 break
             }
         }
-        coordinator.gameSession.mcSession?.delegate = self
+        coordinator.gameSession.mcSession.delegate = self
         configureSession()
         startCoaching()
         configureGestures()
@@ -181,7 +181,7 @@ extension ChessARView: ARSessionDelegate {
     
     func session(_ session: ARSession, didOutputCollaborationData data: ARSession.CollaborationData) {
         guard let encodedData = try? NSKeyedArchiver.archivedData(withRootObject: data, requiringSecureCoding: true) else { return }
-        try? gameCoordinator.gameSession.mcSession?.send(encodedData, toPeers: gameCoordinator.gameSession.mcSession?.connectedPeers ?? [], with: data.priority == .critical ? .reliable : .unreliable)
+        try? gameCoordinator.gameSession.mcSession.send(encodedData, toPeers: gameCoordinator.gameSession.mcSession.connectedPeers, with: data.priority == .critical ? .reliable : .unreliable)
     }
 }
 

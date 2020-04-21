@@ -12,5 +12,5 @@ final class GameSession {
     static let shared: GameSession = GameSession()
     private init() {}
     var isHost: Bool = false
-    var mcSession: MCSession?
+    let mcSession: MCSession = MCSession(peer: MCPeerID(displayName: UIDevice.current.name), securityIdentity: nil, encryptionPreference: .required)
 }

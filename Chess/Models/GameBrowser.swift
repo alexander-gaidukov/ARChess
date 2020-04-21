@@ -27,9 +27,8 @@ final class GameBrowser: NSObject, ObservableObject {
     
     @Binding var completed: Bool
     
-    private let peerID = MCPeerID(displayName: UIDevice.current.name)
     private lazy var browser: MCNearbyServiceBrowser = {
-        MCNearbyServiceBrowser(peer: peerID, serviceType: MultipeerGame.serviceType)
+        MCNearbyServiceBrowser(peer: gameSession.mcSession.myPeerID, serviceType: MultipeerGame.serviceType)
     }()
     
     init(completed: Binding<Bool>) {
@@ -39,21 +38,18 @@ final class GameBrowser: NSObject, ObservableObject {
     
     func start() {
         gameSession.isHost = false
-        gameSession.mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
-        gameSession.mcSession?.delegate = self
+        gameSession.mcSession.delegate = self
         browser.delegate = self
         browser.startBrowsingForPeers()
     }
     
     func stop() {
-        gameSession.mcSession?.delegate = nil
         browser.delegate = nil
         browser.stopBrowsingForPeers()
     }
     
     func invite(peerId: MCPeerID) {
-        guard let session = gameSession.mcSession else { return }
-        browser.invitePeer(peerId, to: session, withContext: nil, timeout: inviteTimeout)
+        browser.invitePeer(peerId, to: gameSession.mcSession, withContext: nil, timeout: inviteTimeout)
         invitingPeer = peerId
         DispatchQueue.main.asyncAfter(deadline: .now() + inviteTimeout) {[weak self] in
             self?.invitingPeer = nil

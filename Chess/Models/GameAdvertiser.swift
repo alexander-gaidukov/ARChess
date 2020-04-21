@@ -22,9 +22,8 @@ final class GameAdvertiser: NSObject, ObservableObject {
         GameSession.shared
     }
     
-    private let peerID = MCPeerID(displayName: UIDevice.current.name)
     private lazy var advertiser: MCNearbyServiceAdvertiser = {
-        MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: MultipeerGame.serviceType)
+        MCNearbyServiceAdvertiser(peer: gameSession.mcSession.myPeerID, discoveryInfo: nil, serviceType: MultipeerGame.serviceType)
     }()
     
     
@@ -57,21 +56,18 @@ final class GameAdvertiser: NSObject, ObservableObject {
     
     func start() {
         gameSession.isHost = true
-        gameSession.mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
-        gameSession.mcSession?.delegate = self
+        gameSession.mcSession.delegate = self
         advertiser.delegate = self
         advertiser.startAdvertisingPeer()
     }
     
     func stop() {
-        gameSession.mcSession?.delegate = nil
         advertiser.delegate = nil
         advertiser.stopAdvertisingPeer()
     }
     
     func acceptInvitation() {
-        guard let session = gameSession.mcSession else { return }
-        invitationCompletion?(true, session)
+        invitationCompletion?(true, gameSession.mcSession)
         invitationCompletion = nil
     }
     

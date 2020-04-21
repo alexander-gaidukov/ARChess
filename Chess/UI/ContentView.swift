@@ -32,7 +32,7 @@ struct ContentView : View {
     @State var sheetState: SheetState = SheetState()
     
     func checkSession() {
-        guard !gameStarted, let session = GameSession.shared.mcSession, !session.connectedPeers.isEmpty else { return }
+        guard !gameStarted, !GameSession.shared.mcSession.connectedPeers.isEmpty else { return }
         gameStarted = true
     }
     
