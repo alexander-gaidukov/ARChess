@@ -27,8 +27,8 @@ struct GameView : View {
     
     @ObservedObject var gameCoordinator: GameCoordinator
     
-    init(presented: Binding<Bool>, gameSession: GameSession) {
-        gameCoordinator = GameCoordinator(gameSession: gameSession, quit: presented.negate)
+    init(presented: Binding<Bool>) {
+        gameCoordinator = GameCoordinator(quit: presented.negate)
     }
     
     var body: some View {
@@ -149,7 +149,7 @@ struct ARViewContainer: UIViewRepresentable {
 struct GameView_Previews : PreviewProvider {
     @State static var presented: Bool = true
     static var previews: some View {
-        GameView(presented: $presented, gameSession: GameSession())
+        GameView(presented: $presented)
     }
 }
 #endif

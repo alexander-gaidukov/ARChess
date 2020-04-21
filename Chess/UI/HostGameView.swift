@@ -18,8 +18,8 @@ struct HostGameView: View {
     
     @ObservedObject private var advertiser: GameAdvertiser
     
-    init(gameSession: GameSession, presented: Binding<Bool>) {
-        advertiser = GameAdvertiser(gameSession: gameSession, completed: presented.negate)
+    init(presented: Binding<Bool>) {
+        advertiser = GameAdvertiser(completed: presented.negate)
     }
     
     var body: some View {
@@ -46,7 +46,7 @@ struct HostGameView: View {
 struct HostGameView_Previews: PreviewProvider {
     @State static var presented = false
     static var previews: some View {
-        HostGameView(gameSession: GameSession(), presented: $presented)
+        HostGameView(presented: $presented)
     }
 }
 #endif

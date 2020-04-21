@@ -49,8 +49,8 @@ struct AvailableGameView: View {
 struct JoinGameView: View {
     @ObservedObject private var browser: GameBrowser
     
-    init(gameSession: GameSession, presented: Binding<Bool>) {
-        browser = GameBrowser(gameSession: gameSession, completed: presented.negate)
+    init(presented: Binding<Bool>) {
+        browser = GameBrowser(completed: presented.negate)
     }
     
     var body: some View {
@@ -72,7 +72,7 @@ struct JoinGameView: View {
 struct JoinGameView_Previews: PreviewProvider {
     @State static var presented: Bool = true
     static var previews: some View {
-        JoinGameView(gameSession: GameSession(), presented: $presented)
+        JoinGameView(presented: $presented)
     }
 }
 #endif

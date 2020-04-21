@@ -12,19 +12,27 @@ import SwiftUI
 
 struct ContentView : View {
     
-    enum SheetType {
-        case host
-        case join
+    struct SheetState {
+        enum SheetType {
+            case host
+            case join
+        }
+        var sheetType: SheetType? = nil
+        var presented: Bool {
+            get {
+                sheetType != nil
+            }
+            set {
+                if !newValue { sheetType = nil }
+            }
+        }
     }
     
-    @State var gameSession = GameSession()
-    
     @State var gameStarted: Bool = false
-    @State var sheetPresented: Bool = false
-    @State var sheetType: SheetType = .host
+    @State var sheetState: SheetState = SheetState()
     
     func checkSession() {
-        guard !gameStarted, let session = gameSession.mcSession, !session.connectedPeers.isEmpty else { return }
+        guard !gameStarted, let session = GameSession.shared.mcSession, !session.connectedPeers.isEmpty else { return }
         gameStarted = true
     }
     
@@ -40,26 +48,24 @@ struct ContentView : View {
                 Spacer()
                 HStack {
                     Button(action: {
-                        self.sheetType = .host
-                        self.sheetPresented = true
+                        self.sheetState.sheetType = .host
                     }){ Text("Host Game") }
                         .buttonStyle(MainButtonStyle())
                         .frame(width: 150)
                     Button(action: {
-                        self.sheetType = .join
-                        self.sheetPresented = true
+                        self.sheetState.sheetType = .join
                     }){ Text("Join Game") }
                         .buttonStyle(MainButtonStyle())
                         .frame(width: 150)
                     }
-            }.overlay(NavigationLink(destination: GameView(presented: $gameStarted, gameSession: gameSession), isActive: $gameStarted) { EmptyView() })
+            }.overlay(NavigationLink(destination: GameView(presented: $gameStarted), isActive: $gameStarted) { EmptyView() })
             .navigationBarTitle("")
             .navigationBarHidden(true)
-            .sheet(isPresented: $sheetPresented, onDismiss: { self.checkSession() }) {
-                if self.sheetType == .host {
-                    HostGameView(gameSession: self.gameSession, presented: self.$sheetPresented)
+            .sheet(isPresented: $sheetState.presented, onDismiss: { self.checkSession() }) {
+                if self.sheetState.sheetType == .host {
+                    HostGameView(presented: self.$sheetState.presented)
                 } else {
-                    JoinGameView(gameSession: self.gameSession, presented: self.$sheetPresented)
+                    JoinGameView(presented: self.$sheetState.presented)
                 }
             }
         }

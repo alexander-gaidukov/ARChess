@@ -18,7 +18,9 @@ final class GameBrowser: NSObject, ObservableObject {
     
     private let inviteTimeout: TimeInterval = 30
     
-    var gameSession: GameSession
+    private var gameSession: GameSession {
+        GameSession.shared
+    }
     
     @Published var peers: [MCPeerID] = []
     @Published var invitingPeer: MCPeerID? = nil
@@ -30,9 +32,8 @@ final class GameBrowser: NSObject, ObservableObject {
         MCNearbyServiceBrowser(peer: peerID, serviceType: MultipeerGame.serviceType)
     }()
     
-    init(gameSession: GameSession, completed: Binding<Bool>) {
+    init(completed: Binding<Bool>) {
         self._completed = completed
-        self.gameSession = gameSession
         super.init()
     }
     

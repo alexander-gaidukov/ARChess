@@ -53,7 +53,9 @@ final class GameCoordinator: ObservableObject {
     
     var board: GameBoard = GameBoard()
     
-    var gameSession: GameSession
+    var gameSession: GameSession {
+        GameSession.shared
+    }
     
     var playerColor: FigureColor
     
@@ -106,10 +108,9 @@ final class GameCoordinator: ObservableObject {
         killedFigures.filter { $0.color == .black }.sorted()
     }
     
-    init(gameSession: GameSession, quit: Binding<Bool>) {
-        self.gameSession = gameSession
+    init(quit: Binding<Bool>) {
         _quit = quit
-        playerColor = gameSession.isHost ? .white : .black
+        playerColor = GameSession.shared.isHost ? .white : .black
     }
     
     func oponentLeaveTheGame() {

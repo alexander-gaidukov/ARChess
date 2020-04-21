@@ -12,12 +12,15 @@ import SwiftUI
 
 final class GameAdvertiser: NSObject, ObservableObject {
     
-    var gameSession: GameSession
     @Published var candidatePeerID: MCPeerID?
     @Published var sessionState: MCSessionState = .notConnected
     @Binding var completed: Bool
     
     private var invitationCompletion: ((Bool, MCSession?) -> ())?
+    
+    private var gameSession: GameSession {
+        GameSession.shared
+    }
     
     private let peerID = MCPeerID(displayName: UIDevice.current.name)
     private lazy var advertiser: MCNearbyServiceAdvertiser = {
@@ -47,9 +50,8 @@ final class GameAdvertiser: NSObject, ObservableObject {
         }
     }
     
-    init(gameSession: GameSession, completed: Binding<Bool>) {
+    init(completed: Binding<Bool>) {
         self._completed = completed
-        self.gameSession = gameSession
         super.init()
     }
     

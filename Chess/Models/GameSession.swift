@@ -6,10 +6,11 @@
 //  Copyright © 2020 Alexaner Gaidukov. All rights reserved.
 //
 
-import SwiftUI
 import MultipeerConnectivity
 
-class GameSession {
+final class GameSession {
+    static let shared: GameSession = GameSession()
+    private init() {}
     var isHost: Bool = false
     var mcSession: MCSession?
 }
