@@ -75,16 +75,18 @@ extension GameBrowser: MCNearbyServiceBrowserDelegate {
 
 extension GameBrowser: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        switch state {
-        case .notConnected:
-            invitingPeer = nil
-        case .connecting:
-            break
-        case .connected:
-            invitingPeer = nil
-            completed = true
-        @unknown default:
-            break
+        DispatchQueue.main.async {
+            switch state {
+            case .notConnected:
+                self.invitingPeer = nil
+            case .connecting:
+                break
+            case .connected:
+                self.invitingPeer = nil
+                self.completed = true
+            @unknown default:
+                break
+            }
         }
     }
     

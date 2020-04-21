@@ -92,7 +92,9 @@ extension GameAdvertiser: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         sessionState = state
         if state == .connected {
-            completed = true
+            DispatchQueue.main.async {
+                self.completed = true
+            }
         }
     }
     
