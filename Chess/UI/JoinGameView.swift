@@ -47,11 +47,8 @@ struct AvailableGameView: View {
 }
 
 struct JoinGameView: View {
-    @ObservedObject private var browser: GameBrowser
-    
-    init(presented: Binding<Bool>) {
-        browser = GameBrowser(completed: presented.negate)
-    }
+    @Environment(\.presentationMode) private var presentationMode
+    @ObservedObject private var browser = GameBrowser()
     
     var body: some View {
         List {
@@ -65,14 +62,16 @@ struct JoinGameView: View {
         }
         .onAppear { self.browser.start() }
         .onDisappear { self.browser.stop() }
+        .onReceive(browser.$completed) { completed in
+            if completed { self.presentationMode.wrappedValue.dismiss() }
+        }
     }
 }
 
 #if DEBUG
 struct JoinGameView_Previews: PreviewProvider {
-    @State static var presented: Bool = true
     static var previews: some View {
-        JoinGameView(presented: $presented)
+        JoinGameView()
     }
 }
 #endif

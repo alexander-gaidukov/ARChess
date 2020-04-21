@@ -63,9 +63,9 @@ struct ContentView : View {
             .navigationBarHidden(true)
             .sheet(isPresented: $sheetState.presented, onDismiss: { self.checkSession() }) {
                 if self.sheetState.sheetType == .host {
-                    HostGameView(presented: self.$sheetState.presented)
+                    HostGameView()
                 } else {
-                    JoinGameView(presented: self.$sheetState.presented)
+                    JoinGameView()
                 }
             }
         }

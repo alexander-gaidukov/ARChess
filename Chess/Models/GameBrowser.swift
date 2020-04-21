@@ -8,7 +8,6 @@
 
 import MultipeerConnectivity
 import Combine
-import SwiftUI
 
 struct MultipeerGame {
     static var serviceType = "chessgame"
@@ -24,17 +23,11 @@ final class GameBrowser: NSObject, ObservableObject {
     
     @Published var peers: [MCPeerID] = []
     @Published var invitingPeer: MCPeerID? = nil
-    
-    @Binding var completed: Bool
+    @Published var completed: Bool = true
     
     private lazy var browser: MCNearbyServiceBrowser = {
         MCNearbyServiceBrowser(peer: gameSession.mcSession.myPeerID, serviceType: MultipeerGame.serviceType)
     }()
-    
-    init(completed: Binding<Bool>) {
-        self._completed = completed
-        super.init()
-    }
     
     func start() {
         gameSession.isHost = false

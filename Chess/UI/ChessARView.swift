@@ -233,6 +233,10 @@ extension ChessARView: MCSessionDelegate {
             if gameCoordinator.gameSession.isHost { gameCoordinator.isSecondPlayerReady = true }
         case .gameBegins:
             if !gameCoordinator.gameSession.isHost { gameCoordinator.state = .playing }
+        case let .move(start, end):
+            DispatchQueue.main.async {
+                self.gameBoard?.makeRemoteMove(from: start, to: end)
+            }
         }
     }
     

@@ -8,13 +8,12 @@
 
 import MultipeerConnectivity
 import Combine
-import SwiftUI
 
 final class GameAdvertiser: NSObject, ObservableObject {
     
     @Published var candidatePeerID: MCPeerID?
     @Published var sessionState: MCSessionState = .notConnected
-    @Binding var completed: Bool
+    @Published var completed: Bool = false
     
     private var invitationCompletion: ((Bool, MCSession?) -> ())?
     
@@ -47,11 +46,6 @@ final class GameAdvertiser: NSObject, ObservableObject {
         @unknown default:
             return ""
         }
-    }
-    
-    init(completed: Binding<Bool>) {
-        self._completed = completed
-        super.init()
     }
     
     func start() {

@@ -16,17 +16,18 @@ extension Binding where Value == Bool {
 
 struct HostGameView: View {
     
-    @ObservedObject private var advertiser: GameAdvertiser
+    @Environment(\.presentationMode) private var presentationMode
     
-    init(presented: Binding<Bool>) {
-        advertiser = GameAdvertiser(completed: presented.negate)
-    }
+    @ObservedObject private var advertiser = GameAdvertiser()
     
     var body: some View {
         Text(advertiser.sessionMessage)
             .font(.title)
             .onAppear { self.advertiser.start() }
             .onDisappear { self.advertiser.stop() }
+            .onReceive(advertiser.$completed) { completed in
+                if completed { self.presentationMode.wrappedValue.dismiss() }
+            }
             .alert(isPresented: $advertiser.shouldShowConfirmation) {
                 Alert(title: Text("\(self.advertiser.candidatePeerID!.displayName) wants to play with you"),
                       primaryButton: .default(Text("Accept")) {
@@ -44,9 +45,8 @@ struct HostGameView: View {
 
 #if DEBUG
 struct HostGameView_Previews: PreviewProvider {
-    @State static var presented = false
     static var previews: some View {
-        HostGameView(presented: $presented)
+        HostGameView()
     }
 }
 #endif

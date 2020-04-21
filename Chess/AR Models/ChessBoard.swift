@@ -216,35 +216,55 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
                 return
             }
             
-            coordinator.move(figure: entity.figure!, from: startDragPosition!, to: endPosition) { [weak self] result in
+            moveEntity(entity, from: startDragPosition!, to: endPosition) {[weak self] success in
                 guard let self = self else { return }
-                switch result {
-                case let .success(mateType, positionToEat, additionalMove, transformedFigure):
-                    self.eatFigure(at: positionToEat, color: entity.figure!.color.oposite)
-                    self.moveFigure(entity, to: endPosition, transformedFigure: transformedFigure)
-                    if let am = additionalMove {
-                        self.makeAdditionalMove(from: am.first!, to: am.last!)
-                    }
-                    self.handleMateState(mateType)
-                case let .failure(position):
-                    self.moveFigure(entity, to: self.startDragPosition!)
-                    if let p = position {
-                        self.showCheck(at: p, hideAfter: 0.5)
-                    }
-                }
+                self.coordinator.sendMessage(.move(self.startDragPosition!, endPosition))
                 self.startDragPosition = nil
             }
-            
         }
     }
     
-    private func makeAdditionalMove(from start: SIMD2<Int>, to end: SIMD2<Int>) {
-        for entity in figureEntities where entity.parent != nil {
-            if let c = coordinates(from: entity.position), c == start {
-                makeMove(entity: entity, position: end)
-                break
+    private func moveEntity(_ entity: Entity, from startPosition: SIMD2<Int>, to endPosition: SIMD2<Int>, completion: @escaping (Bool) -> () = { _ in}) {
+        coordinator.move(figure: entity.figure!, from: startPosition, to: endPosition) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .success(mateType, positionToEat, additionalMove, transformedFigure):
+                self.eatFigure(at: positionToEat, color: entity.figure!.color.oposite)
+                self.moveFigure(entity, to: endPosition, transformedFigure: transformedFigure)
+                if let am = additionalMove {
+                    self.makeAdditionalMove(from: am[0], to: am[1])
+                }
+                self.handleMateState(mateType)
+                completion(true)
+            case let .failure(position):
+                self.moveFigure(entity, to: startPosition)
+                if let p = position {
+                    self.showCheck(at: p, hideAfter: 0.5)
+                }
+                completion(false)
             }
         }
+    }
+    
+    func makeRemoteMove(from start: SIMD2<Int>, to end: SIMD2<Int>) {
+        guard let entity = figure(at: start) else { return }
+        moveEntity(entity, from: start, to: end)
+    }
+    
+    private func figure(at position: SIMD2<Int>, color: FigureColor? = nil) -> Entity? {
+        for entity in figureEntities where entity.parent != nil {
+            if let c = coordinates(from: entity.position), c == position {
+                if color == nil || color == entity.figure!.color {
+                    return entity
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func makeAdditionalMove(from start: SIMD2<Int>, to end: SIMD2<Int>) {
+        guard let entity = figure(at: start) else { return }
+        makeMove(entity: entity, position: end)
     }
     
     private func showCheck(at position: SIMD2<Int>, hideAfter timeInterval: TimeInterval? = nil) {
@@ -258,12 +278,8 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
     }
     
     private func eatFigure(at position: SIMD2<Int>, color: FigureColor) {
-        for entity in figureEntities where entity.parent != nil {
-            if entity.figure!.color == color, let c = coordinates(from: entity.position), c == position {
-                entity.removeFromParent()
-                break
-            }
-        }
+        guard let entity = figure(at: position, color: color) else { return }
+        entity.removeFromParent()
     }
     
     private func handleMateState(_ state: MateType) {
