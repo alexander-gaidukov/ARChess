@@ -90,10 +90,11 @@ extension GameAdvertiser: MCNearbyServiceAdvertiserDelegate {
 
 extension GameAdvertiser: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        sessionState = state
-        if state == .connected {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            self.sessionState = state
+            if state == .connected {
                 self.completed = true
+                
             }
         }
     }
