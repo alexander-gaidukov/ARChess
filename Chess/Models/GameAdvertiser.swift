@@ -54,6 +54,7 @@ final class GameAdvertiser: NSObject, ObservableObject {
     }
     
     func start() {
+        gameSession.isHost = true
         gameSession.mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         gameSession.mcSession?.delegate = self
         advertiser.delegate = self

@@ -31,7 +31,6 @@ struct ContentView : View {
     var body: some View {
         NavigationView {
             VStack(alignment: .center) {
-                NavigationLink(destination: GameView(presented: $gameStarted), isActive: $gameStarted) { Text("") }.hidden()
                 Text("Chess Game")
                     .font(.title)
                 Spacer()
@@ -52,8 +51,8 @@ struct ContentView : View {
                     }){ Text("Join Game") }
                         .buttonStyle(MainButtonStyle())
                         .frame(width: 150)
-                }
-            }
+                    }
+            }.overlay(NavigationLink(destination: GameView(presented: $gameStarted, gameSession: gameSession), isActive: $gameStarted) { EmptyView() })
             .navigationBarTitle("")
             .navigationBarHidden(true)
             .sheet(isPresented: $sheetPresented, onDismiss: { self.checkSession() }) {

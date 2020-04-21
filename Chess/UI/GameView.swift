@@ -25,10 +25,11 @@ struct KilledFiguresStack: View {
 
 struct GameView : View {
     
-    @ObservedObject var gameCoordinator = GameCoordinator()
+    @ObservedObject var gameCoordinator: GameCoordinator
     
-    @Binding var presented: Bool
-    @State var askForQuit: Bool = false
+    init(presented: Binding<Bool>, gameSession: GameSession) {
+        gameCoordinator = GameCoordinator(gameSession: gameSession, quit: presented.negate)
+    }
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -62,7 +63,7 @@ struct GameView : View {
                     .buttonStyle(MainButtonStyle())
                 }
             }
-            Button(action: {self.askForQuit = true}) {
+            Button(action: {self.gameCoordinator.askToQuitTheGame() }) {
                 Text("X")
                     .font(.title)
                     .foregroundColor(Color.gray)
@@ -96,8 +97,21 @@ struct GameView : View {
                 }
             ])
         }
-        .alert(isPresented: $askForQuit) {
-            Alert(title: Text("Do you really want to quit the game?"), message: nil, primaryButton: .destructive(Text("Quit")){ self.presented = false }, secondaryButton: .cancel())
+        .alert(isPresented: $gameCoordinator.shouldShowAlert) {
+            if gameCoordinator.oponentDidLeaveTheGame {
+                return Alert(title: Text("You oponent left the game"),
+                             message: nil,
+                             dismissButton: .default(Text("OK")){
+                                self.gameCoordinator.quitTheGame()
+                            })
+            }
+            
+            return Alert(title: Text("Do you really want to quit the game?"),
+                        message: nil,
+                        primaryButton: .destructive(Text("Quit")){
+                            self.gameCoordinator.quitTheGame()
+                        },
+                        secondaryButton: .cancel())
         }
     }
 }
@@ -135,7 +149,7 @@ struct ARViewContainer: UIViewRepresentable {
 struct GameView_Previews : PreviewProvider {
     @State static var presented: Bool = true
     static var previews: some View {
-        GameView(presented: $presented)
+        GameView(presented: $presented, gameSession: GameSession())
     }
 }
 #endif

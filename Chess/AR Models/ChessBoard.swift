@@ -122,7 +122,7 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
         entity.generateCollisionShapes(recursive: false)
         entity.figure = figure
         
-        if let arView = arView {
+        if let arView = arView, figure.color == coordinator.playerColor {
             let recognizer = arView.installGestures(.translation, for: entity).first!
             recognizer.removeTarget(nil, action: nil)
             recognizer.addTarget(self, action: #selector(handleTranslation(_:)))

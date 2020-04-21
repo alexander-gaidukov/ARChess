@@ -10,5 +10,6 @@ import SwiftUI
 import MultipeerConnectivity
 
 class GameSession {
+    var isHost: Bool = false
     var mcSession: MCSession?
 }

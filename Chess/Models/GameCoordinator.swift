@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 enum MoveResult {
     case success(MateType, SIMD2<Int>, [SIMD2<Int>]?, Figure?)
@@ -17,9 +18,11 @@ enum MoveResult {
 enum GameState: Equatable {
     case initCoaching
     case planeSearching
+    case waitingForTheHostGame
     case waitingForGameElements
     case positioning
     case scaling
+    case waitingForTheOtherPlayer
     case playing
 }
 
@@ -30,6 +33,8 @@ extension GameState {
             return nil
         case .planeSearching:
             return "Click on a horizontal surface to place the board"
+        case .waitingForTheHostGame:
+            return "Waiting while the host place the board"
         case .waitingForGameElements:
             return "Game elements loading..."
         case .positioning:
@@ -38,6 +43,8 @@ extension GameState {
             return "Use gestures to position and scale board, then tap Start button"
         case .playing:
             return nil
+        case .waitingForTheOtherPlayer:
+            return "Waiting for the other player"
         }
     }
 }
@@ -46,11 +53,29 @@ final class GameCoordinator: ObservableObject {
     
     var board: GameBoard = GameBoard()
     
+    var gameSession: GameSession
+    
+    var playerColor: FigureColor
+    
+    var isSecondPlayerReady: Bool = false {
+        didSet {
+            DispatchQueue.main.async {
+                if self.state == .waitingForTheOtherPlayer {
+                    self.state = .playing
+                }
+            }
+        }
+    }
+    
     @Published var activeColor: FigureColor = .white
     @Published var killedFigures:[Figure] = []
     @Published var state: GameState = .initCoaching
     @Published var askForTransformation: Bool = false
     @Published var gameResult: MateType = .not
+    @Published var oponentDidLeaveTheGame: Bool = false
+    @Published var shouldShowAlert: Bool = false
+    
+    @Binding var quit: Bool
     
     var figureTransformationCompletion: ((FigureType) -> ())?
     
@@ -67,8 +92,6 @@ final class GameCoordinator: ObservableObject {
         case .stalemate, .draw:
             return "Draw"
         }
-        
-        
     }
     
     var startButtonVisible: Bool {
@@ -83,8 +106,39 @@ final class GameCoordinator: ObservableObject {
         killedFigures.filter { $0.color == .black }.sorted()
     }
     
+    init(gameSession: GameSession, quit: Binding<Bool>) {
+        self.gameSession = gameSession
+        _quit = quit
+        playerColor = gameSession.isHost ? .white : .black
+    }
+    
+    func oponentLeaveTheGame() {
+        oponentDidLeaveTheGame = true
+        shouldShowAlert = true
+    }
+    
+    func askToQuitTheGame() {
+        shouldShowAlert = true
+    }
+    
+    func quitTheGame() {
+        gameSession.mcSession?.disconnect()
+        gameSession.mcSession = nil
+        quit = true
+    }
+    
     func startGame() {
-        state = .playing
+        guard state != .playing else { return }
+        if gameSession.isHost {
+            state = isSecondPlayerReady ? .playing : .waitingForTheOtherPlayer
+        } else {
+            state = .waitingForTheOtherPlayer
+            sendMessage(.iAMReady)
+        }
+    }
+    
+    func sendMessage(_ message: Message) {
+        try? gameSession.mcSession?.send(Message.iAMReady.data, toPeers: gameSession.mcSession?.connectedPeers ?? [], with: .reliable)
     }
     
     func move(figure: Figure, from start: SIMD2<Int>, to end: SIMD2<Int>, completion: @escaping (MoveResult) -> ()) {

@@ -37,6 +37,7 @@ final class GameBrowser: NSObject, ObservableObject {
     }
     
     func start() {
+        gameSession.isHost = false
         gameSession.mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         gameSession.mcSession?.delegate = self
         browser.delegate = self

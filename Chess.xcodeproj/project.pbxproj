@@ -18,6 +18,7 @@
 		712FA92F2445C155000C0695 /* Tail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712FA92E2445C155000C0695 /* Tail.swift */; };
 		712FA9312445C303000C0695 /* ChessBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712FA9302445C303000C0695 /* ChessBoard.swift */; };
 		712FA933244618B4000C0695 /* ChessARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712FA932244618B4000C0695 /* ChessARView.swift */; };
+		7130CE3A244F31300039DB68 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7130CE39244F31300039DB68 /* Message.swift */; };
 		7161B97A2449D2D200CCB174 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161B9792449D2D200CCB174 /* GameView.swift */; };
 		7161B97D244C605300CCB174 /* GameBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161B97C244C605300CCB174 /* GameBrowser.swift */; };
 		7161B97F244C625F00CCB174 /* GameAdvertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7161B97E244C625F00CCB174 /* GameAdvertiser.swift */; };
@@ -42,6 +43,7 @@
 		712FA92E2445C155000C0695 /* Tail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tail.swift; sourceTree = "<group>"; };
 		712FA9302445C303000C0695 /* ChessBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessBoard.swift; sourceTree = "<group>"; };
 		712FA932244618B4000C0695 /* ChessARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessARView.swift; sourceTree = "<group>"; };
+		7130CE39244F31300039DB68 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		7161B9792449D2D200CCB174 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		7161B97C244C605300CCB174 /* GameBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBrowser.swift; sourceTree = "<group>"; };
 		7161B97E244C625F00CCB174 /* GameAdvertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAdvertiser.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				7161B97C244C605300CCB174 /* GameBrowser.swift */,
 				7161B97E244C625F00CCB174 /* GameAdvertiser.swift */,
 				7161B980244C650E00CCB174 /* GameSession.swift */,
+				7130CE39244F31300039DB68 /* Message.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				7161B97D244C605300CCB174 /* GameBrowser.swift in Sources */,
 				7161B983244CA69100CCB174 /* HostGameView.swift in Sources */,
 				717CBEC424474C6200CB6E5E /* FocusEntity.swift in Sources */,
+				7130CE3A244F31300039DB68 /* Message.swift in Sources */,
 				712FA9312445C303000C0695 /* ChessBoard.swift in Sources */,
 				717CBEC024473BF200CB6E5E /* FigureComponent.swift in Sources */,
 				712FA91924438DDA000C0695 /* Experience.rcproject in Sources */,

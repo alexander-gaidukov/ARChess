@@ -10,6 +10,7 @@ import RealityKit
 import UIKit
 import ARKit
 import Combine
+import MultipeerConnectivity
 
 extension float4x4 {
     func normalized() -> float4x4 {
@@ -46,6 +47,7 @@ final class ChessARView: ARView {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
         configuration.frameSemantics = .personSegmentationWithDepth
+        configuration.isCollaborationEnabled = true
         return configuration
     }()
     
@@ -54,22 +56,30 @@ final class ChessARView: ARView {
         super.init(frame: frameRect)
         
         stateObserver = gameCoordinator.$state.sink { [weak self] state in
+            guard let self = self else { return }
             switch state {
             case .initCoaching:
                 break
             case .planeSearching:
                 break
+            case .waitingForTheHostGame:
+                break
             case .waitingForGameElements:
                 break
             case .positioning:
-                self?.positionContent()
+                self.positionContent()
             case .scaling:
-                self?.startScaling()
+                self.startScaling()
             case .playing:
-                self?.startGame()
+                if self.gameCoordinator.gameSession.isHost {
+                    self.gameCoordinator.sendMessage(.gameBegins)
+                }
+                self.startGame()
+            case .waitingForTheOtherPlayer:
+                break
             }
         }
-        
+        coordinator.gameSession.mcSession?.delegate = self
         configureSession()
         startCoaching()
         configureGestures()
@@ -104,6 +114,10 @@ final class ChessARView: ARView {
         coachingOverlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(coachingOverlayView)
         coachingOverlayView.setActive(true, animated: true)
+        
+        if !gameCoordinator.gameSession.isHost {
+            coachingOverlayView.activatesAutomatically = false
+        }
     }
     
     private func resetSession() {
@@ -160,7 +174,14 @@ extension ChessARView: ARSessionDelegate {
         if let gameAnchor = anchors.first(where: { $0.name == "Game Anchor" }) {
             self.gameAnchor = gameAnchor
             gameCoordinator.state = .positioning
+        } else if !gameCoordinator.gameSession.isHost, anchors.firstIndex(where: { $0 is ARParticipantAnchor }) != nil {
+            coachingOverlayView.setActive(false, animated: true)
         }
+    }
+    
+    func session(_ session: ARSession, didOutputCollaborationData data: ARSession.CollaborationData) {
+        guard let encodedData = try? NSKeyedArchiver.archivedData(withRootObject: data, requiringSecureCoding: true) else { return }
+        try? gameCoordinator.gameSession.mcSession?.send(encodedData, toPeers: gameCoordinator.gameSession.mcSession?.connectedPeers ?? [], with: data.priority == .critical ? .reliable : .unreliable)
     }
 }
 
@@ -171,7 +192,7 @@ extension ChessARView: ARCoachingOverlayViewDelegate {
     
     func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         coachingOverlayView.activatesAutomatically = false
-        gameCoordinator.state = .planeSearching
+        gameCoordinator.state = gameCoordinator.gameSession.isHost ? .planeSearching : .waitingForTheHostGame
     }
 }
 
@@ -188,5 +209,42 @@ extension ChessARView: ChessBoardDelegate {
         let entity = ModelEntity(mesh: .generateText(message, font: .systemFont(ofSize: 1), containerFrame: CGRect(origin: .zero, size: CGSize(width: 8, height: 1)), alignment: .center), materials: [SimpleMaterial(color: #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1), isMetallic: true)])
         entity.position = [-4, -0.5, 0]
         board.addChild(entity)
+    }
+}
+
+extension ChessARView: MCSessionDelegate {
+    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        if state == .notConnected {
+            DispatchQueue.main.async {
+                self.gameCoordinator.oponentLeaveTheGame()
+            }
+        }
+    }
+    
+    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        if let collaborationData = try? NSKeyedUnarchiver.unarchivedObject(ofClass: ARSession.CollaborationData.self, from: data) {
+            self.session.update(with: collaborationData)
+            return
+        }
+        
+        guard let message = try? JSONDecoder().decode(Message.self, from: data) else { return }
+        switch message {
+        case .iAMReady:
+            if gameCoordinator.gameSession.isHost { gameCoordinator.isSecondPlayerReady = true }
+        case .gameBegins:
+            if !gameCoordinator.gameSession.isHost { gameCoordinator.state = .playing }
+        }
+    }
+    
+    func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+        
+    }
+    
+    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+        
+    }
+    
+    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
+        
     }
 }
