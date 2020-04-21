@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-
-
 struct ContentView : View {
     
     struct SheetState {

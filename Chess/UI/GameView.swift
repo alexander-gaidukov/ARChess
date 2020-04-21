@@ -25,10 +25,35 @@ struct KilledFiguresStack: View {
 
 struct GameView : View {
     
-    @ObservedObject var gameCoordinator: GameCoordinator
+    struct AlertPresentationState {
+        enum AlertType {
+            case quit
+            case oponentQuit
+        }
+        
+        var type: AlertType? = nil
+        var presented: Bool {
+            get {
+                type != nil
+            }
+            set {
+                if !newValue { type = nil }
+            }
+        }
+    }
+    
+    @ObservedObject var gameCoordinator = GameCoordinator()
+    @State var alertPresentation = AlertPresentationState()
+    
+    @Binding var presented: Bool
     
     init(presented: Binding<Bool>) {
-        gameCoordinator = GameCoordinator(quit: presented.negate)
+        self._presented = presented
+    }
+    
+    private func quitTheGame() {
+        gameCoordinator.quitTheGame()
+        presented = false
     }
     
     var body: some View {
@@ -63,7 +88,7 @@ struct GameView : View {
                     .buttonStyle(MainButtonStyle())
                 }
             }
-            Button(action: {self.gameCoordinator.askToQuitTheGame() }) {
+            Button(action: { self.alertPresentation.type = .quit }) {
                 Text("X")
                     .font(.title)
                     .foregroundColor(Color.gray)
@@ -73,6 +98,9 @@ struct GameView : View {
         }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
+        .onReceive(gameCoordinator.$oponentDidLeaveTheGame) { leave in
+            if leave { self.alertPresentation.type = .oponentQuit }
+        }
         .actionSheet(isPresented: $gameCoordinator.askForTransformation) {
             ActionSheet(title: Text("Choose figure type"), message: nil, buttons: [
                 .default(Text("Queen")) {
@@ -97,19 +125,19 @@ struct GameView : View {
                 }
             ])
         }
-        .alert(isPresented: $gameCoordinator.shouldShowAlert) {
-            if gameCoordinator.oponentDidLeaveTheGame {
+        .alert(isPresented: $alertPresentation.presented) {
+            if alertPresentation.type == .oponentQuit {
                 return Alert(title: Text("You oponent left the game"),
                              message: nil,
                              dismissButton: .default(Text("OK")){
-                                self.gameCoordinator.quitTheGame()
+                                self.quitTheGame()
                             })
             }
             
             return Alert(title: Text("Do you really want to quit the game?"),
                         message: nil,
                         primaryButton: .destructive(Text("Quit")){
-                            self.gameCoordinator.quitTheGame()
+                            self.quitTheGame()
                         },
                         secondaryButton: .cancel())
         }

@@ -8,7 +8,6 @@
 
 import Foundation
 import Combine
-import SwiftUI
 
 enum MoveResult {
     case success(MateType, SIMD2<Int>, [SIMD2<Int>]?, Figure?)
@@ -57,7 +56,7 @@ final class GameCoordinator: ObservableObject {
         GameSession.shared
     }
     
-    var playerColor: FigureColor
+    var playerColor: FigureColor = GameSession.shared.isHost ? .white : .black
     
     var isSecondPlayerReady: Bool = false {
         didSet {
@@ -75,9 +74,6 @@ final class GameCoordinator: ObservableObject {
     @Published var askForTransformation: Bool = false
     @Published var gameResult: MateType = .not
     @Published var oponentDidLeaveTheGame: Bool = false
-    @Published var shouldShowAlert: Bool = false
-    
-    @Binding var quit: Bool
     
     var figureTransformationCompletion: ((FigureType) -> ())?
     
@@ -108,23 +104,12 @@ final class GameCoordinator: ObservableObject {
         killedFigures.filter { $0.color == .black }.sorted()
     }
     
-    init(quit: Binding<Bool>) {
-        _quit = quit
-        playerColor = GameSession.shared.isHost ? .white : .black
-    }
-    
     func oponentLeaveTheGame() {
         oponentDidLeaveTheGame = true
-        shouldShowAlert = true
-    }
-    
-    func askToQuitTheGame() {
-        shouldShowAlert = true
     }
     
     func quitTheGame() {
         gameSession.mcSession.disconnect()
-        quit = true
     }
     
     func startGame() {
