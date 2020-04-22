@@ -114,6 +114,7 @@ final class GameCoordinator: ObservableObject {
     }
     
     func quitTheGame() {
+        gameSession.mcSession.delegate = nil
         gameSession.mcSession.disconnect()
     }
     
