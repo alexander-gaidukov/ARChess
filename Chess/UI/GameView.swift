@@ -25,25 +25,13 @@ struct KilledFiguresStack: View {
 
 struct GameView : View {
     
-    struct AlertPresentationState {
-        enum AlertType {
-            case quit
-            case oponentQuit
-        }
-        
-        var type: AlertType? = nil
-        var presented: Bool {
-            get {
-                type != nil
-            }
-            set {
-                if !newValue { type = nil }
-            }
-        }
+    enum AlertType {
+        case quit
+        case oponentQuit
     }
     
     @ObservedObject var gameCoordinator = GameCoordinator()
-    @State var alertPresentation = AlertPresentationState()
+    @State var alertPresentation = PresentationState<AlertType>()
     
     @Binding var presented: Bool
     
@@ -57,7 +45,7 @@ struct GameView : View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .topLeading) {
             ARViewContainer(coordinator: gameCoordinator)
                 .edgesIgnoringSafeArea(.all)
                 .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
@@ -65,6 +53,7 @@ struct GameView : View {
             VStack {
                 if gameCoordinator.infoMessage != nil {
                     Text(gameCoordinator.infoMessage!)
+                        .fixedSize()
                         .padding(EdgeInsets(top: 5, leading: 16, bottom: 5, trailing: 16))
                         .background(Color.gray)
                         .cornerRadius(4)
@@ -86,20 +75,20 @@ struct GameView : View {
                         Text("Start")
                     }
                     .buttonStyle(MainButtonStyle())
+                    .padding()
                 }
             }
-            Button(action: { self.alertPresentation.type = .quit }) {
+            Button(action: { self.alertPresentation.value = .quit }) {
                 Text("X")
                     .font(.title)
                     .foregroundColor(Color.gray)
                     .frame(width: 44, height: 44)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .onReceive(gameCoordinator.$oponentDidLeaveTheGame) { leave in
-            if leave { self.alertPresentation.type = .oponentQuit }
+            if leave { self.alertPresentation.value = .oponentQuit }
         }
         .actionSheet(isPresented: $gameCoordinator.askForTransformation) {
             ActionSheet(title: Text("Choose figure type"), message: nil, buttons: [
@@ -126,7 +115,7 @@ struct GameView : View {
             ])
         }
         .alert(isPresented: $alertPresentation.presented) {
-            if alertPresentation.type == .oponentQuit {
+            if alertPresentation.value == .oponentQuit {
                 return Alert(title: Text("You oponent left the game"),
                              message: nil,
                              dismissButton: .default(Text("OK")){
@@ -141,21 +130,6 @@ struct GameView : View {
                         },
                         secondaryButton: .cancel())
         }
-    }
-}
-
-struct MainButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .foregroundColor(configuration.isPressed ? .white: .blue)
-            .frame(height: 60)
-            .frame(maxWidth: .infinity)
-            .background(configuration.isPressed ? Color.blue : Color.white.opacity(0.001))
-            .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8).stroke(configuration.isPressed ? Color.clear : Color.blue, style: StrokeStyle(lineWidth: 2))
-            )
-            .padding(.horizontal)
     }
 }
 

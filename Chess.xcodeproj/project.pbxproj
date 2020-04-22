@@ -134,8 +134,8 @@
 			children = (
 				712FA932244618B4000C0695 /* ChessARView.swift */,
 				712FA91624438DDA000C0695 /* ContentView.swift */,
-				7161B9792449D2D200CCB174 /* GameView.swift */,
 				7161B982244CA69100CCB174 /* HostGameView.swift */,
+				7161B9792449D2D200CCB174 /* GameView.swift */,
 				7161B984244CA73300CCB174 /* JoinGameView.swift */,
 			);
 			path = UI;

@@ -35,8 +35,10 @@ final class ChessARView: ARView {
     }
     
     private var gameAnchor: ARAnchor?
+    
     private var anchoringObserver: Cancellable?
     private var stateObserver: Cancellable?
+    private var gameResultObserver: Cancellable?
     
     private let coachingOverlayView = ARCoachingOverlayView()
     private var gameBoard: ChessBoard?
@@ -55,28 +57,35 @@ final class ChessARView: ARView {
         gameCoordinator = coordinator
         super.init(frame: frameRect)
         
+        gameResultObserver = gameCoordinator.$mateType.sink { [weak self] mateType in
+            let gameResult: GameResult?
+            switch mateType {
+            case .not, .check:
+                gameResult = nil
+            case let .mate(color, _):
+                gameResult = .win(color.oposite)
+            case .stalemate, .draw:
+                gameResult = .draw
+            }
+            if let result = gameResult {
+                self?.showGameResult(result)
+            }
+        }
+        
         stateObserver = gameCoordinator.$state.sink { [weak self] state in
             guard let self = self else { return }
             switch state {
-            case .initCoaching:
-                break
-            case .planeSearching:
-                break
-            case .waitingForTheHostGame:
-                break
-            case .waitingForGameElements:
+            case .initCoaching, .planeSearching, .waitingForTheHostGame, .waitingForGameElements, .waitingForTheOtherPlayer:
                 break
             case .positioning:
                 self.positionContent()
             case .scaling:
-                self.startScaling()
+                self.scalingTheBoard()
             case .playing:
                 if self.gameCoordinator.gameSession.isHost {
                     self.gameCoordinator.sendMessage(.gameBegins)
                 }
                 self.startGame()
-            case .waitingForTheOtherPlayer:
-                break
             }
         }
         coordinator.gameSession.mcSession.delegate = self
@@ -131,9 +140,8 @@ final class ChessARView: ARView {
             return
         }
         let board = ChessBoard(arView: self, realityKitScene: figures, coordinator: gameCoordinator)
-        board.minimumBounds = [0.5, 0.5]
+        board.minimumBounds = minimumBoardBounds
         board.anchoring = AnchoringComponent(anchor)
-        board.delegate = self
         anchoringObserver = scene.subscribe(to: SceneEvents.AnchoredStateChanged.self, on: board) {[weak self] event in
             guard event.isAnchored else { return }
             DispatchQueue.main.async {
@@ -146,7 +154,7 @@ final class ChessARView: ARView {
         self.gameBoard = board
     }
     
-    private func startScaling() {
+    private func scalingTheBoard() {
         guard let gameBoard = self.gameBoard else { return }
         gameBoard.startScalingAndPositioning()
     }
@@ -167,6 +175,20 @@ final class ChessARView: ARView {
             session.add(anchor: arAnchor)
         }
     }
+    
+    func showGameResult(_ result: GameResult) {
+        let message: String
+        switch result {
+        case .draw:
+            message = "Draw"
+        case .win(let color):
+            message = color == .white ? "White won!" : "Black won!"
+        }
+        
+        let entity = ModelEntity(mesh: .generateText(message, font: .systemFont(ofSize: 1), containerFrame: CGRect(origin: .zero, size: CGSize(width: 8, height: 1)), alignment: .center), materials: [SimpleMaterial(color: #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1), isMetallic: true)])
+        entity.position = [-4, -0.5, 0]
+        gameBoard?.addChild(entity)
+    }
 }
 
 extension ChessARView: ARSessionDelegate {
@@ -174,7 +196,7 @@ extension ChessARView: ARSessionDelegate {
         if let gameAnchor = anchors.first(where: { $0.name == "Game Anchor" }) {
             self.gameAnchor = gameAnchor
             gameCoordinator.state = .positioning
-        } else if !gameCoordinator.gameSession.isHost, anchors.firstIndex(where: { $0 is ARParticipantAnchor }) != nil {
+        } else if coachingOverlayView.isActive, !gameCoordinator.gameSession.isHost, anchors.firstIndex(where: { $0 is ARParticipantAnchor }) != nil {
             coachingOverlayView.setActive(false, animated: true)
         }
     }
@@ -193,22 +215,6 @@ extension ChessARView: ARCoachingOverlayViewDelegate {
     func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         coachingOverlayView.activatesAutomatically = false
         gameCoordinator.state = gameCoordinator.gameSession.isHost ? .planeSearching : .waitingForTheHostGame
-    }
-}
-
-extension ChessARView: ChessBoardDelegate {
-    func chessBoard(_ board: ChessBoard, didFinishGameWithResult result: GameResult) {
-        let message: String
-        switch result {
-        case .draw:
-            message = "Draw"
-        case .win(let color):
-            message = color == .white ? "White won!" : "Black won!"
-        }
-        
-        let entity = ModelEntity(mesh: .generateText(message, font: .systemFont(ofSize: 1), containerFrame: CGRect(origin: .zero, size: CGSize(width: 8, height: 1)), alignment: .center), materials: [SimpleMaterial(color: #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1), isMetallic: true)])
-        entity.position = [-4, -0.5, 0]
-        board.addChild(entity)
     }
 }
 

@@ -8,26 +8,38 @@
 
 import SwiftUI
 
+struct PresentationState<Value> {
+    var value: Value? = nil
+    var presented: Bool {
+        get {
+            value != nil
+        }
+        set {
+            if !newValue { value = nil }
+        }
+    }
+}
+
+struct MainButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        RoundedRectangle(cornerRadius: 8)
+            .stroke(lineWidth: 2.0)
+            .foregroundColor(configuration.isPressed ? Color.clear : Color.blue)
+            .background(configuration.isPressed ? Color.blue : Color.white.opacity(0.001))
+            .cornerRadius(8)
+            .overlay(configuration.label)
+    }
+}
+
 struct ContentView : View {
     
-    struct SheetState {
-        enum SheetType {
-            case host
-            case join
-        }
-        var sheetType: SheetType? = nil
-        var presented: Bool {
-            get {
-                sheetType != nil
-            }
-            set {
-                if !newValue { sheetType = nil }
-            }
-        }
+    enum SheetType {
+        case host
+        case join
     }
     
     @State var gameStarted: Bool = false
-    @State var sheetState: SheetState = SheetState()
+    @State var sheetState: PresentationState<SheetType> = PresentationState()
     
     func checkSession() {
         guard !gameStarted, !GameSession.shared.mcSession.connectedPeers.isEmpty else { return }
@@ -44,23 +56,23 @@ struct ContentView : View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                 Spacer()
-                HStack {
+                HStack(spacing: 20) {
                     Button(action: {
-                        self.sheetState.sheetType = .host
+                        self.sheetState.value = .host
                     }){ Text("Host Game") }
+                        .frame(height: 60)
                         .buttonStyle(MainButtonStyle())
-                        .frame(width: 150)
                     Button(action: {
-                        self.sheetState.sheetType = .join
+                        self.sheetState.value = .join
                     }){ Text("Join Game") }
+                        .frame(height: 60)
                         .buttonStyle(MainButtonStyle())
-                        .frame(width: 150)
-                    }
+                }.padding()
             }.overlay(NavigationLink(destination: GameView(presented: $gameStarted), isActive: $gameStarted) { EmptyView() })
             .navigationBarTitle("")
             .navigationBarHidden(true)
             .sheet(isPresented: $sheetState.presented, onDismiss: { self.checkSession() }) {
-                if self.sheetState.sheetType == .host {
+                if self.sheetState.value == .host {
                     HostGameView()
                 } else {
                     JoinGameView()

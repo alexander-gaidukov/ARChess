@@ -23,7 +23,7 @@ final class GameBrowser: NSObject, ObservableObject {
     
     @Published var peers: [MCPeerID] = []
     @Published var invitingPeer: MCPeerID? = nil
-    @Published var completed: Bool = true
+    @Published var completed: Bool = false
     
     private lazy var browser: MCNearbyServiceBrowser = {
         MCNearbyServiceBrowser(peer: gameSession.mcSession.myPeerID, serviceType: MultipeerGame.serviceType)

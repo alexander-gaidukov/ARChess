@@ -10,15 +10,6 @@ import UIKit
 import RealityKit
 import Combine
 
-enum GameResult {
-    case draw
-    case win(FigureColor)
-}
-
-protocol ChessBoardDelegate: class {
-    func chessBoard(_ board: ChessBoard, didFinishGameWithResult result: GameResult)
-}
-
 final class ChessBoard: Entity, HasAnchoring, HasCollision {
     
     private weak var arView: ARView?
@@ -30,9 +21,6 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
     
     private var boardGestureRecognizers: [EntityGestureRecognizer] = []
     private var figuresGestureRecognizers: [EntityGestureRecognizer] = []
-    
-    private let blackColor = #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 1)
-    private let whiteColor = #colorLiteral(red: 0.8823529412, green: 0.8823529412, blue: 0.8823529412, alpha: 1)
     
     private var startDragPosition: SIMD2<Int>?
     
@@ -47,12 +35,10 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
         }
     }
     
-    weak var delegate: ChessBoardDelegate?
-    
     private var animationHandler: Cancellable?
     
-    private func tailColor(forRow row: Int, column: Int) -> UIColor {
-        return row.isMultiple(of: 2) == column.isMultiple(of: 2) ? blackColor : whiteColor
+    private func tailColor(forRow row: Int, column: Int) -> Tail.Color {
+        return row.isMultiple(of: 2) == column.isMultiple(of: 2) ? .black : .white
     }
     
     private func flatPosition(forRow row: Int, column: Int) -> SIMD2<Float> {
@@ -170,14 +156,19 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
         figuresGestureRecognizers.forEach { $0.isEnabled = false }
     }
     
-    private func stopScalingAndPositioning() {
-        collision = nil
-        boardGestureRecognizers.forEach { $0.isEnabled = false }
-    }
-    
     func startGame() {
         stopScalingAndPositioning()
         figuresGestureRecognizers.forEach { $0.isEnabled = true }
+    }
+    
+    func makeRemoteMove(from start: SIMD2<Int>, to end: SIMD2<Int>) {
+        guard let entity = figure(at: start) else { return }
+        checkAvailabilityAndMakeMove(entity, from: start, to: end)
+    }
+    
+    private func stopScalingAndPositioning() {
+        collision = nil
+        boardGestureRecognizers.forEach { $0.isEnabled = false }
     }
     
     private func showFocusEntity(_ focusEntity: FocusEntity, at position: SIMD2<Int>) {
@@ -197,8 +188,7 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
             startDragPosition = startPosition
             showFocusEntity(moveFocusEntity, at: startPosition)
         } else if recognizer.state == .changed {
-            guard let translation = recognizer.translation(in: self) else { return }
-            let entity = recognizer.entity!
+            guard let translation = recognizer.translation(in: self), let entity = recognizer.entity else { return }
             entity.position += translation
             recognizer.setTranslation(.zero, in: self)
             if let coords = coordinates(from: entity.position) {
@@ -209,14 +199,14 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
         } else if [.cancelled, .failed, .ended].contains(recognizer.state) {
             moveFocusEntity.removeFromParent()
             
-            let entity = recognizer.entity!
+            guard let entity = recognizer.entity else { return }
             
             guard recognizer.state == .ended, let endPosition = coordinates(from: entity.position) else {
                 moveFigure(entity, to: startDragPosition!)
                 return
             }
             
-            moveEntity(entity, from: startDragPosition!, to: endPosition) {[weak self] success in
+            checkAvailabilityAndMakeMove(entity, from: startDragPosition!, to: endPosition) {[weak self] success in
                 guard let self = self else { return }
                 self.coordinator.sendMessage(.move(self.startDragPosition!, endPosition))
                 self.startDragPosition = nil
@@ -224,7 +214,7 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
         }
     }
     
-    private func moveEntity(_ entity: Entity, from startPosition: SIMD2<Int>, to endPosition: SIMD2<Int>, completion: @escaping (Bool) -> () = { _ in}) {
+    private func checkAvailabilityAndMakeMove(_ entity: Entity, from startPosition: SIMD2<Int>, to endPosition: SIMD2<Int>, completion: @escaping (Bool) -> () = { _ in}) {
         coordinator.move(figure: entity.figure!, from: startPosition, to: endPosition) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -244,11 +234,6 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
                 completion(false)
             }
         }
-    }
-    
-    func makeRemoteMove(from start: SIMD2<Int>, to end: SIMD2<Int>) {
-        guard let entity = figure(at: start) else { return }
-        moveEntity(entity, from: start, to: end)
     }
     
     private func figure(at position: SIMD2<Int>, color: FigureColor? = nil) -> Entity? {
@@ -274,7 +259,6 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
                 self.checkFocusEntity.removeFromParent()
             }
         }
-        
     }
     
     private func eatFigure(at position: SIMD2<Int>, color: FigureColor) {
@@ -284,16 +268,10 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
     
     private func handleMateState(_ state: MateType) {
         switch state {
-        case .not:
-            checkFocusEntity.removeFromParent()
-        case let .check(position):
+        case let .mate(_, position), let .check(position):
             showCheck(at: position)
-        case let .mate(color, position):
-            showCheck(at: position)
-            delegate?.chessBoard(self, didFinishGameWithResult: .win(color.oposite))
-        case .stalemate, .draw:
+        case .not, .stalemate, .draw:
             checkFocusEntity.removeFromParent()
-            delegate?.chessBoard(self, didFinishGameWithResult: .draw)
         }
     }
     
@@ -320,7 +298,6 @@ final class ChessBoard: Entity, HasAnchoring, HasCollision {
     }
     
     private func transformFigure(_ figureEntity: Entity, to figure: Figure) {
-        
         let newEntity = entity(for: figure)
         newEntity.position = figureEntity.position
         figureEntities.append(newEntity)

@@ -17,9 +17,22 @@ extension UIColor {
 
 final class Tail: Entity, HasModel {
     
-    init(color: UIColor) {
+    enum Color {
+        case black
+        case white
+        var uiColor: UIColor {
+            switch self{
+            case .black:
+                return #colorLiteral(red: 0.1176470588, green: 0.1176470588, blue: 0.1176470588, alpha: 1)
+            case .white:
+                return #colorLiteral(red: 0.8823529412, green: 0.8823529412, blue: 0.8823529412, alpha: 1)
+            }
+        }
+    }
+    
+    init(color: Color) {
         super.init()
-        self.model = ModelComponent(mesh: .generateBox(size: [1, 0.1, 1]), materials: [color.material])
+        self.model = ModelComponent(mesh: .generateBox(size: [1, 0.1, 1]), materials: [color.uiColor.material])
     }
     
     required init() {

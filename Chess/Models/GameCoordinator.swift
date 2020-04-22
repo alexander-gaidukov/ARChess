@@ -14,6 +14,11 @@ enum MoveResult {
     case failure(SIMD2<Int>?)
 }
 
+enum GameResult {
+    case draw
+    case win(FigureColor)
+}
+
 enum GameState: Equatable {
     case initCoaching
     case planeSearching
@@ -72,7 +77,7 @@ final class GameCoordinator: ObservableObject {
     @Published var killedFigures:[Figure] = []
     @Published var state: GameState = .initCoaching
     @Published var askForTransformation: Bool = false
-    @Published var gameResult: MateType = .not
+    @Published var mateType: MateType = .not
     @Published var oponentDidLeaveTheGame: Bool = false
     
     var figureTransformationCompletion: ((FigureType) -> ())?
@@ -82,7 +87,7 @@ final class GameCoordinator: ObservableObject {
             return state.message
         }
         
-        switch gameResult {
+        switch mateType {
         case .not, .check:
             return activeColor == .white ? "White move" : "Black move"
         case .mate(let color, _):
@@ -177,16 +182,16 @@ final class GameCoordinator: ObservableObject {
                 newBoard[end] = transformedFigure
                 self.board = newBoard
                 self.activeColor = self.activeColor.oposite
-                self.gameResult = self.board.mate(for: boardFigure.color.oposite)
-                completion(.success(self.gameResult, positionToEat ?? end, additionalMove, transformedFigure))
+                self.mateType = self.board.mate(for: boardFigure.color.oposite)
+                completion(.success(self.mateType, positionToEat ?? end, additionalMove, transformedFigure))
                 self.figureTransformationCompletion = nil
             }
             askForTransformation = true
         } else {
             board = newBoard
             activeColor = activeColor.oposite
-            gameResult = board.mate(for: boardFigure.color.oposite)
-            completion(.success(gameResult, positionToEat ?? end, additionalMove, nil))
+            mateType = board.mate(for: boardFigure.color.oposite)
+            completion(.success(mateType, positionToEat ?? end, additionalMove, nil))
         }
     }
 }

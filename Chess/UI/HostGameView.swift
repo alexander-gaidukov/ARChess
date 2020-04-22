@@ -8,17 +8,12 @@
 
 import SwiftUI
 
-extension Binding where Value == Bool {
-    var negate: Binding<Bool> {
-        Binding<Bool>(get: { !self.wrappedValue }, set: { self.wrappedValue = !$0 })
-    }
-}
-
 struct HostGameView: View {
     
     @Environment(\.presentationMode) private var presentationMode
-    
     @ObservedObject private var advertiser = GameAdvertiser()
+    
+    @State var connectionConfirmation = PresentationState<String>()
     
     var body: some View {
         Text(advertiser.sessionMessage)
@@ -28,8 +23,11 @@ struct HostGameView: View {
             .onReceive(advertiser.$completed) { completed in
                 if completed { self.presentationMode.wrappedValue.dismiss() }
             }
-            .alert(isPresented: $advertiser.shouldShowConfirmation) {
-                Alert(title: Text("\(self.advertiser.candidatePeerID!.displayName) wants to play with you"),
+            .onReceive(advertiser.$candidatePeerID) { candidate in
+                self.connectionConfirmation.value = candidate?.displayName
+            }
+            .alert(isPresented: $connectionConfirmation.presented) {
+                Alert(title: Text("\(self.connectionConfirmation.value ?? "") wants to play with you"),
                       primaryButton: .default(Text("Accept")) {
                         DispatchQueue.main.async {
                             self.advertiser.acceptInvitation()

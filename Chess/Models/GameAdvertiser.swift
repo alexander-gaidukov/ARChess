@@ -25,16 +25,6 @@ final class GameAdvertiser: NSObject, ObservableObject {
         MCNearbyServiceAdvertiser(peer: gameSession.mcSession.myPeerID, discoveryInfo: nil, serviceType: MultipeerGame.serviceType)
     }()
     
-    
-    var shouldShowConfirmation: Bool {
-        get {
-            candidatePeerID != nil
-        }
-        set {
-            if !newValue { candidatePeerID = nil }
-        }
-    }
-    
     var sessionMessage: String {
         switch sessionState {
         case .notConnected:
@@ -63,11 +53,13 @@ final class GameAdvertiser: NSObject, ObservableObject {
     func acceptInvitation() {
         invitationCompletion?(true, gameSession.mcSession)
         invitationCompletion = nil
+        candidatePeerID = nil
     }
     
     func declineInvitation() {
         invitationCompletion?(false, nil)
         invitationCompletion = nil
+        candidatePeerID = nil
     }
 }
 
@@ -84,7 +76,6 @@ extension GameAdvertiser: MCSessionDelegate {
             self.sessionState = state
             if state == .connected {
                 self.completed = true
-                
             }
         }
     }
