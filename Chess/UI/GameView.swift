@@ -74,6 +74,7 @@ struct GameView : View {
                     }) {
                         Text("Start")
                     }
+                    .frame(height: 60)
                     .buttonStyle(MainButtonStyle())
                     .padding()
                 }
