@@ -53,7 +53,6 @@ struct GameView : View {
             VStack {
                 if gameCoordinator.infoMessage != nil {
                     Text(gameCoordinator.infoMessage!)
-                        .fixedSize()
                         .padding(EdgeInsets(top: 5, leading: 16, bottom: 5, trailing: 16))
                         .background(Color.gray)
                         .cornerRadius(4)

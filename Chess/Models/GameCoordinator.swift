@@ -128,7 +128,7 @@ final class GameCoordinator: ObservableObject {
     }
     
     func sendMessage(_ message: Message) {
-        try? gameSession.mcSession.send(Message.iAMReady.data, toPeers: gameSession.mcSession.connectedPeers, with: .reliable)
+        try? gameSession.mcSession.send(message.data, toPeers: gameSession.mcSession.connectedPeers, with: .reliable)
     }
     
     func move(figure: Figure, from start: SIMD2<Int>, to end: SIMD2<Int>, completion: @escaping (MoveResult) -> ()) {
