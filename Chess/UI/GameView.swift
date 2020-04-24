@@ -30,8 +30,14 @@ struct GameView : View {
         case oponentQuit
     }
     
+    enum SheetType {
+        case figureTransform
+        case colorChoose
+    }
+    
     @ObservedObject var gameCoordinator = GameCoordinator()
     @State var alertPresentation = PresentationState<AlertType>()
+    @State var sheetPresentation = PresentationState<SheetType>()
     
     @Binding var presented: Bool
     
@@ -90,26 +96,47 @@ struct GameView : View {
         .onReceive(gameCoordinator.$oponentDidLeaveTheGame) { leave in
             if leave { self.alertPresentation.value = .oponentQuit }
         }
-        .actionSheet(isPresented: $gameCoordinator.askForTransformation) {
-            ActionSheet(title: Text("Choose figure type"), message: nil, buttons: [
-                .default(Text("Queen")) {
+        .onReceive(gameCoordinator.$askForTransformation) { ask in
+            if ask { self.sheetPresentation.value = .figureTransform }
+        }
+        .onReceive(gameCoordinator.$state) { _ in
+            if self.gameCoordinator.askForFigureColor { self.sheetPresentation.value = .colorChoose }
+        }
+        .actionSheet(isPresented: $sheetPresentation.presented) {
+            if sheetPresentation.value == .figureTransform {
+                return ActionSheet(title: Text("Choose figure type"), message: nil, buttons: [
+                    .default(Text("Queen")) {
+                        DispatchQueue.main.async {
+                            self.gameCoordinator.figureTransformationCompletion?(.queen)
+                        }
+                    },
+                    .default(Text("Rook")) {
+                        DispatchQueue.main.async {
+                            self.gameCoordinator.figureTransformationCompletion?(.rook)
+                        }
+                    },
+                    .default(Text("Bishop")) {
+                        DispatchQueue.main.async {
+                            self.gameCoordinator.figureTransformationCompletion?(.bishop)
+                        }
+                    },
+                    .default(Text("Knight")) {
+                        DispatchQueue.main.async {
+                            self.gameCoordinator.figureTransformationCompletion?(.knight)
+                        }
+                    }
+                ])
+            }
+            
+            return ActionSheet(title: Text("Choose color"), message: nil, buttons: [
+                .default(Text("White")) {
                     DispatchQueue.main.async {
-                        self.gameCoordinator.figureTransformationCompletion?(.queen)
+                        self.gameCoordinator.playerColor = .white
                     }
                 },
-                .default(Text("Rook")) {
+                .default(Text("Black")) {
                     DispatchQueue.main.async {
-                        self.gameCoordinator.figureTransformationCompletion?(.rook)
-                    }
-                },
-                .default(Text("Bishop")) {
-                    DispatchQueue.main.async {
-                        self.gameCoordinator.figureTransformationCompletion?(.bishop)
-                    }
-                },
-                .default(Text("Knight")) {
-                    DispatchQueue.main.async {
-                        self.gameCoordinator.figureTransformationCompletion?(.knight)
+                        self.gameCoordinator.playerColor = .black
                     }
                 }
             ])

@@ -61,7 +61,7 @@ final class GameCoordinator: ObservableObject {
         GameSession.shared
     }
     
-    var playerColor: FigureColor = GameSession.shared.isHost ? .white : .black
+    var playerColor: FigureColor!
     
     var isSecondPlayerReady: Bool = false {
         didSet {
@@ -101,6 +101,10 @@ final class GameCoordinator: ObservableObject {
         state == .scaling
     }
     
+    var askForFigureColor: Bool {
+        state == .planeSearching
+    }
+    
     var whiteKilledFigures: [Figure] {
         killedFigures.filter { $0.color == .white }.sorted()
     }
@@ -120,12 +124,7 @@ final class GameCoordinator: ObservableObject {
     
     func startGame() {
         guard state != .playing else { return }
-        if gameSession.isHost {
-            state = isSecondPlayerReady ? .playing : .waitingForTheOtherPlayer
-        } else {
-            state = .waitingForTheOtherPlayer
-            sendMessage(.iAMReady)
-        }
+        state = .waitingForTheOtherPlayer
     }
     
     func sendMessage(_ message: Message) {

@@ -44,6 +44,7 @@ final class ChessARView: ARView {
     private var gameBoard: ChessBoard?
     
     private var gameCoordinator: GameCoordinator
+    private var boardTransformation: float4x4?
     
     private lazy var configuration: ARWorldTrackingConfiguration = {
         let configuration = ARWorldTrackingConfiguration()
@@ -75,16 +76,17 @@ final class ChessARView: ARView {
         stateObserver = gameCoordinator.$state.sink { [weak self] state in
             guard let self = self else { return }
             switch state {
-            case .initCoaching, .planeSearching, .waitingForTheHostGame, .waitingForGameElements, .waitingForTheOtherPlayer:
+            case .initCoaching, .planeSearching, .waitingForTheHostGame, .waitingForGameElements:
                 break
+            case .waitingForTheOtherPlayer:
+                if coordinator.gameSession.isHost {
+                    coordinator.sendMessage(.gameBegins(self.gameCoordinator.playerColor.oposite, self.gameBoard!.transformMatrix(relativeTo: nil)))
+                }
             case .positioning:
                 self.positionContent()
             case .scaling:
                 self.scalingTheBoard()
             case .playing:
-                if self.gameCoordinator.gameSession.isHost {
-                    self.gameCoordinator.sendMessage(.gameBegins)
-                }
                 self.startGame()
             }
         }
@@ -142,12 +144,20 @@ final class ChessARView: ARView {
         let board = ChessBoard(arView: self, realityKitScene: figures, coordinator: gameCoordinator)
         board.minimumBounds = minimumBoardBounds
         board.anchoring = AnchoringComponent(anchor)
+        if let transform = boardTransformation {
+            board.setTransformMatrix(transform, relativeTo: nil)
+        }
         anchoringObserver = scene.subscribe(to: SceneEvents.AnchoredStateChanged.self, on: board) {[weak self] event in
-            guard event.isAnchored else { return }
+            guard let self = self, event.isAnchored else { return }
             DispatchQueue.main.async {
-                self?.anchoringObserver?.cancel()
-                self?.anchoringObserver = nil
-                self?.gameCoordinator.state = .scaling
+                self.anchoringObserver?.cancel()
+                self.anchoringObserver = nil
+                if self.gameCoordinator.gameSession.isHost {
+                    self.gameCoordinator.state = .scaling
+                } else {
+                    self.gameCoordinator.sendMessage(.iAMReady)
+                }
+                
             }
         }
         scene.anchors.append(board)
@@ -165,7 +175,7 @@ final class ChessARView: ARView {
     }
     
     @objc private func handleTouch(_ recognizer: UITapGestureRecognizer) {
-        if gameCoordinator.state == .planeSearching {
+        if gameCoordinator.state == .planeSearching && gameCoordinator.playerColor != nil {
             guard let result = raycast(from: recognizer.location(in: self), allowing: .existingPlaneGeometry, alignment: .horizontal).first,
                 let anchor = result.anchor as? ARPlaneAnchor,
                 anchor.alignment == .horizontal,
@@ -195,7 +205,9 @@ extension ChessARView: ARSessionDelegate {
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         if let gameAnchor = anchors.first(where: { $0.name == "Game Anchor" }) {
             self.gameAnchor = gameAnchor
-            gameCoordinator.state = .positioning
+            if gameCoordinator.gameSession.isHost {
+                gameCoordinator.state = .positioning
+            }
         } else if coachingOverlayView.isActive, !gameCoordinator.gameSession.isHost, anchors.firstIndex(where: { $0 is ARParticipantAnchor }) != nil {
             coachingOverlayView.setActive(false, animated: true)
         }
@@ -237,8 +249,14 @@ extension ChessARView: MCSessionDelegate {
         switch message {
         case .iAMReady:
             if gameCoordinator.gameSession.isHost { gameCoordinator.isSecondPlayerReady = true }
-        case .gameBegins:
-            if !gameCoordinator.gameSession.isHost { gameCoordinator.state = .playing }
+        case let .gameBegins(color, transform):
+            if !gameCoordinator.gameSession.isHost {
+                gameCoordinator.playerColor = color
+                boardTransformation = transform
+                DispatchQueue.main.async {
+                    self.gameCoordinator.state = .positioning
+                }
+            }
         case let .move(start, end):
             DispatchQueue.main.async {
                 self.gameBoard?.makeRemoteMove(from: start, to: end)
