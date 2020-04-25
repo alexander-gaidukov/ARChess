@@ -17,7 +17,7 @@ extension simd_float4x4 {
     
     init(_ array: [Float]) {
         var columns: [SIMD4<Float>] = []
-        for i in 0..<3 {
+        for i in 0..<4 {
             columns.append(SIMD4<Float>(array[i * 4..<(i + 1)*4]))
         }
         self.init(columns)
@@ -26,7 +26,7 @@ extension simd_float4x4 {
 
 enum Message {
     case iAMReady
-    case gameBegins(FigureColor, float4x4)
+    case gameIsReady(FigureColor, float4x4)
     case move(SIMD2<Int>, SIMD2<Int>)
 }
 
@@ -47,8 +47,8 @@ extension Message: Codable {
         switch self {
         case .iAMReady:
             try containter.encode("iAMReady", forKey: .type)
-        case let .gameBegins(color, transform):
-            try containter.encode("gameBegins", forKey: .type)
+        case let .gameIsReady(color, transform):
+            try containter.encode("gameIsReady", forKey: .type)
             try containter.encode(color, forKey: .color)
             try containter.encode(transform.toArray, forKey: .transform)
         case let .move(start, end):
@@ -66,10 +66,10 @@ extension Message: Codable {
         switch type {
         case "iAMReady":
             self = .iAMReady
-        case "gameBegins":
+        case "gameIsReady":
             let color = try container.decode(FigureColor.self, forKey: .color)
             let transform = float4x4(try container.decode([Float].self, forKey: .transform))
-            self = .gameBegins(color, transform)
+            self = .gameIsReady(color, transform)
         case "move":
             let startRow = try container.decode(Int.self, forKey: .startRow)
             let startColumn = try container.decode(Int.self, forKey: .startColumn)

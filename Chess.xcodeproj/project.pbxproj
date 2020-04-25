@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71265AD22454480E00D36A75 /* AlertWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71265AD12454480E00D36A75 /* AlertWrapper.swift */; };
 		712FA91524438DDA000C0695 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712FA91424438DDA000C0695 /* AppDelegate.swift */; };
 		712FA91724438DDA000C0695 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712FA91624438DDA000C0695 /* ContentView.swift */; };
 		712FA91924438DDA000C0695 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 712FA91824438DDA000C0695 /* Experience.rcproject */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		71265AD12454480E00D36A75 /* AlertWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWrapper.swift; sourceTree = "<group>"; };
 		712FA91124438DDA000C0695 /* Chess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chess.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		712FA91424438DDA000C0695 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		712FA91624438DDA000C0695 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				7161B982244CA69100CCB174 /* HostGameView.swift */,
 				7161B9792449D2D200CCB174 /* GameView.swift */,
 				7161B984244CA73300CCB174 /* JoinGameView.swift */,
+				71265AD12454480E00D36A75 /* AlertWrapper.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71265AD22454480E00D36A75 /* AlertWrapper.swift in Sources */,
 				7161B981244C650E00CCB174 /* GameSession.swift in Sources */,
 				712FA933244618B4000C0695 /* ChessARView.swift in Sources */,
 				7161B985244CA73300CCB174 /* JoinGameView.swift in Sources */,

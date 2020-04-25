@@ -28,16 +28,12 @@ struct GameView : View {
     enum AlertType {
         case quit
         case oponentQuit
-    }
-    
-    enum SheetType {
+        case colorChoise
         case figureTransform
-        case colorChoose
     }
     
     @ObservedObject var gameCoordinator = GameCoordinator()
     @State var alertPresentation = PresentationState<AlertType>()
-    @State var sheetPresentation = PresentationState<SheetType>()
     
     @Binding var presented: Bool
     
@@ -48,6 +44,47 @@ struct GameView : View {
     private func quitTheGame() {
         gameCoordinator.quitTheGame()
         presented = false
+    }
+    
+    private func quitAlertConfiguration() -> AlertConfiguration {
+        let cancel = AlertAction(title: "Cancel", style: .cancel)
+        let quit = AlertAction(title: "Quit", style: .destructive) {
+            self.quitTheGame()
+        }
+        return AlertConfiguration(title: "Do you really want to quit the game?", message: nil, actions: [cancel, quit])
+    }
+    
+    private func oponentQuitAlertConfiguration() -> AlertConfiguration {
+        let ok = AlertAction(title: "OK", style: .default) {
+            self.quitTheGame()
+        }
+        return AlertConfiguration(title: "Your oponent left the game", message: nil, actions: [ok])
+    }
+    
+    private func chooseColorAlertConfiguration() -> AlertConfiguration {
+        let white = AlertAction(title: "White", style: .default) {
+            self.gameCoordinator.playerColor = .white
+        }
+        let black = AlertAction(title: "Balck", style: .default) {
+            self.gameCoordinator.playerColor = .black
+        }
+        return AlertConfiguration(title: "Choose color", message: nil, actions: [white, black])
+    }
+    
+    private func transformFigureAlertConfiguration() -> AlertConfiguration {
+        let queen = AlertAction(title: "Queen", style: .default) {
+            self.gameCoordinator.figureTransformationCompletion?(.queen)
+        }
+        let rook = AlertAction(title: "Rook", style: .default) {
+            self.gameCoordinator.figureTransformationCompletion?(.rook)
+        }
+        let bishop = AlertAction(title: "Bishop", style: .default) {
+            self.gameCoordinator.figureTransformationCompletion?(.bishop)
+        }
+        let knight = AlertAction(title: "Knight", style: .default) {
+            self.gameCoordinator.figureTransformationCompletion?(.knight)
+        }
+        return AlertConfiguration(title: "Choose figure type", message: nil, actions: [queen, rook, bishop, knight])
     }
     
     var body: some View {
@@ -85,8 +122,8 @@ struct GameView : View {
                 }
             }
             Button(action: { self.alertPresentation.value = .quit }) {
-                Text("X")
-                    .font(.title)
+                Image(systemName: "xmark")
+                    .imageScale(.large)
                     .foregroundColor(Color.gray)
                     .frame(width: 44, height: 44)
             }
@@ -97,65 +134,22 @@ struct GameView : View {
             if leave { self.alertPresentation.value = .oponentQuit }
         }
         .onReceive(gameCoordinator.$askForTransformation) { ask in
-            if ask { self.sheetPresentation.value = .figureTransform }
+            if ask { self.alertPresentation.value = .figureTransform }
         }
         .onReceive(gameCoordinator.$state) { _ in
-            if self.gameCoordinator.askForFigureColor { self.sheetPresentation.value = .colorChoose }
+            if self.gameCoordinator.askForFigureColor { self.alertPresentation.value = .colorChoise }
         }
-        .actionSheet(isPresented: $sheetPresentation.presented) {
-            if sheetPresentation.value == .figureTransform {
-                return ActionSheet(title: Text("Choose figure type"), message: nil, buttons: [
-                    .default(Text("Queen")) {
-                        DispatchQueue.main.async {
-                            self.gameCoordinator.figureTransformationCompletion?(.queen)
-                        }
-                    },
-                    .default(Text("Rook")) {
-                        DispatchQueue.main.async {
-                            self.gameCoordinator.figureTransformationCompletion?(.rook)
-                        }
-                    },
-                    .default(Text("Bishop")) {
-                        DispatchQueue.main.async {
-                            self.gameCoordinator.figureTransformationCompletion?(.bishop)
-                        }
-                    },
-                    .default(Text("Knight")) {
-                        DispatchQueue.main.async {
-                            self.gameCoordinator.figureTransformationCompletion?(.knight)
-                        }
-                    }
-                ])
+        .choiseAlert(presented: $alertPresentation.presented) {
+            switch self.alertPresentation.value! {
+            case .quit:
+                return self.quitAlertConfiguration()
+            case .oponentQuit:
+                return self.oponentQuitAlertConfiguration()
+            case .colorChoise:
+                return self.chooseColorAlertConfiguration()
+            case .figureTransform:
+                return self.transformFigureAlertConfiguration()
             }
-            
-            return ActionSheet(title: Text("Choose color"), message: nil, buttons: [
-                .default(Text("White")) {
-                    DispatchQueue.main.async {
-                        self.gameCoordinator.playerColor = .white
-                    }
-                },
-                .default(Text("Black")) {
-                    DispatchQueue.main.async {
-                        self.gameCoordinator.playerColor = .black
-                    }
-                }
-            ])
-        }
-        .alert(isPresented: $alertPresentation.presented) {
-            if alertPresentation.value == .oponentQuit {
-                return Alert(title: Text("You oponent left the game"),
-                             message: nil,
-                             dismissButton: .default(Text("OK")){
-                                self.quitTheGame()
-                            })
-            }
-            
-            return Alert(title: Text("Do you really want to quit the game?"),
-                        message: nil,
-                        primaryButton: .destructive(Text("Quit")){
-                            self.quitTheGame()
-                        },
-                        secondaryButton: .cancel())
         }
     }
 }

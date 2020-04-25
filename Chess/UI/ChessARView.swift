@@ -34,7 +34,13 @@ final class ChessARView: ARView {
         }
     }
     
-    private var gameAnchor: ARAnchor?
+    private var gameAnchor: ARAnchor? {
+        didSet {
+            if !gameCoordinator.gameSession.isHost, gameCoordinator.state == .positioning {
+                positionContent()
+            }
+        }
+    }
     
     private var anchoringObserver: Cancellable?
     private var stateObserver: Cancellable?
@@ -80,7 +86,7 @@ final class ChessARView: ARView {
                 break
             case .waitingForTheOtherPlayer:
                 if coordinator.gameSession.isHost {
-                    coordinator.sendMessage(.gameBegins(self.gameCoordinator.playerColor.oposite, self.gameBoard!.transformMatrix(relativeTo: nil)))
+                    coordinator.sendMessage(.gameIsReady(self.gameCoordinator.playerColor.oposite, self.gameBoard!.transformMatrix(relativeTo: self.gameBoard!.parent)))
                 }
             case .positioning:
                 self.positionContent()
@@ -119,7 +125,7 @@ final class ChessARView: ARView {
     }
     
     private func startCoaching() {
-        coachingOverlayView.goal = .horizontalPlane
+        coachingOverlayView.goal = gameCoordinator.gameSession.isHost ? .horizontalPlane : .tracking
         coachingOverlayView.session = session
         coachingOverlayView.delegate = self
         coachingOverlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -144,9 +150,6 @@ final class ChessARView: ARView {
         let board = ChessBoard(arView: self, realityKitScene: figures, coordinator: gameCoordinator)
         board.minimumBounds = minimumBoardBounds
         board.anchoring = AnchoringComponent(anchor)
-        if let transform = boardTransformation {
-            board.setTransformMatrix(transform, relativeTo: nil)
-        }
         anchoringObserver = scene.subscribe(to: SceneEvents.AnchoredStateChanged.self, on: board) {[weak self] event in
             guard let self = self, event.isAnchored else { return }
             DispatchQueue.main.async {
@@ -155,6 +158,9 @@ final class ChessARView: ARView {
                 if self.gameCoordinator.gameSession.isHost {
                     self.gameCoordinator.state = .scaling
                 } else {
+                    if let transform = self.boardTransformation {
+                        board.setTransformMatrix(transform, relativeTo: board.parent)
+                    }
                     self.gameCoordinator.sendMessage(.iAMReady)
                 }
                 
@@ -249,7 +255,7 @@ extension ChessARView: MCSessionDelegate {
         switch message {
         case .iAMReady:
             if gameCoordinator.gameSession.isHost { gameCoordinator.isSecondPlayerReady = true }
-        case let .gameBegins(color, transform):
+        case let .gameIsReady(color, transform):
             if !gameCoordinator.gameSession.isHost {
                 gameCoordinator.playerColor = color
                 boardTransformation = transform
