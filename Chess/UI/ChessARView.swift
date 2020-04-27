@@ -86,7 +86,7 @@ final class ChessARView: ARView {
                 break
             case .waitingForTheOtherPlayer:
                 if coordinator.gameSession.isHost {
-                    coordinator.sendMessage(.gameIsReady(self.gameCoordinator.playerColor.oposite, self.gameBoard!.transformMatrix(relativeTo: self.gameBoard!.parent)))
+                    coordinator.sendMessage(.gameIsReady(self.gameCoordinator.playerColor.oposite, self.gameBoard!.transform.matrix))
                 }
             case .positioning:
                 self.positionContent()
@@ -159,7 +159,7 @@ final class ChessARView: ARView {
                     self.gameCoordinator.state = .scaling
                 } else {
                     if let transform = self.boardTransformation {
-                        board.setTransformMatrix(transform, relativeTo: board.parent)
+                        board.transform = Transform(matrix: transform)
                     }
                     self.gameCoordinator.sendMessage(.iAMReady)
                 }
