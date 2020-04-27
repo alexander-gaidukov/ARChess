@@ -51,6 +51,7 @@ struct AlertWrapper<Content: View>: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIHostingController<Content>, context: Context) {
+        uiViewController.rootView = content
         if presented && uiViewController.presentedViewController == nil {
             let alert = self.makeAlert {
                 self.presented = false

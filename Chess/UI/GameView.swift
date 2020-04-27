@@ -136,8 +136,10 @@ struct GameView : View {
         .onReceive(gameCoordinator.$askForTransformation) { ask in
             if ask { self.alertPresentation.value = .figureTransform }
         }
-        .onReceive(gameCoordinator.$state) { _ in
-            if self.gameCoordinator.askForFigureColor { self.alertPresentation.value = .colorChoise }
+        .onReceive(gameCoordinator.$state) { state in
+            if state == .planeSearching {
+                self.alertPresentation.value = .colorChoise
+            }
         }
         .choiseAlert(presented: $alertPresentation.presented) {
             switch self.alertPresentation.value! {

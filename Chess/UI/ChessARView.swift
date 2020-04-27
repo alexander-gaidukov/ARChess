@@ -187,7 +187,7 @@ final class ChessARView: ARView {
                 anchor.alignment == .horizontal,
                 anchor.extent.x >= minimumBoardBounds.x,
                 anchor.extent.z >= minimumBoardBounds.y else { return }
-            let arAnchor = ARAnchor(name: "Game Anchor", transform: anchor.transform.normalized())
+            let arAnchor = ARAnchor(name: "Game Anchor", transform: result.worldTransform)
             session.add(anchor: arAnchor)
         }
     }

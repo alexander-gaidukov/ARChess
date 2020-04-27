@@ -101,10 +101,6 @@ final class GameCoordinator: ObservableObject {
         state == .scaling
     }
     
-    var askForFigureColor: Bool {
-        state == .planeSearching
-    }
-    
     var whiteKilledFigures: [Figure] {
         killedFigures.filter { $0.color == .white }.sorted()
     }
